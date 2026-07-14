@@ -1,0 +1,2410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+Reusable i-dac Media Control Tower Template v11 Edge Logo Layout
+To reuse for a new client:
+1. Update BRAND_CONFIG: clientName, teamName, logoUrl, primaryColor, secondaryColor, sidebarColor.
+2. Update DATA_SOURCES: overview, daily, target, learning CSV URLs.
+3. Keep source schemas/columns aligned with the template.
+4. Do not edit the logic below unless schema or KPI rules change.
+-->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>i-dac Media Control Tower</title>
+<style>
+:root{
+  --idac-yellow:#FFDC00;
+  --idac-green:#00A150;
+  --idac-dark:#0f172a;
+  --sidebar:#0b1220;
+  --sidebar-dark:#0f172a;
+  --sidebar-text:#ffffff;
+  --sidebar-muted:rgba(255,255,255,.82);
+  --sidebar-active-bg:rgba(255,255,255,.16);
+  --sidebar-active-border:#ffffff;
+  --logo-box:#ffffff;
+  --logo-box-radius:14px;
+  --logo-box-width:116px;
+  --logo-box-height:64px;
+  --table-hover:#fffbea;
+  --table-hover-sticky:#fff3b8;
+  --row-accent:var(--idac-yellow);
+  --export-button:#00A150;
+  --progress-budget:#cc2131;
+  --progress-kpi:#cc2131;
+  --progress-good:#00A150;
+  --progress-watch:#d97706;
+  --progress-over:#dc2626;
+  --progress-track:#e5e7eb;
+  --daily-chart-bar:#cc2131;
+  --kpi-watch:#d97706;
+  --kpi-normal:#2563eb;
+  --kpi-good:#00A150;
+  --budget-over:#dc2626;
+  --budget-normal:#00A150;
+  --semantic-track:#e5e7eb;
+  --semantic-info:#2563eb;
+  --semantic-bad:#dc2626;
+  --semantic-watch:#d97706;
+  --semantic-good:#00A150;
+  --ink:#111827;
+  --muted:#64748b;
+  --bg:#f3f6f8;
+  --card:#ffffff;
+  --line:#dfe7ef;
+  --soft:#f8fafc;
+  --red:#dc2626;
+  --orange:#ea580c;
+  --amber:#d97706;
+  --blue:#2563eb;
+  --purple:#7c3aed;
+  --gray:#94a3b8;
+  --weight-score-neutral:#64748b;
+  --weight-score-bad:#dc2626;
+  --weight-score-watch:#d97706;
+  --weight-score-good:#00A150;
+  --bar-track:#e5e7eb;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:13px}
+body{display:flex;overflow:hidden}
+button,input,select{font:inherit}
+.hidden{display:none!important}
+#sidebar{width:268px;background:linear-gradient(180deg,var(--sidebar) 0%,var(--sidebar-dark) 100%);color:var(--sidebar-text);display:flex;flex-direction:column;flex-shrink:0;box-shadow:2px 0 18px rgba(15,23,42,.18);z-index:30}
+.brand{height:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:24px 18px 22px;border-bottom:1px solid rgba(255,255,255,.18)}
+.logoWrap{width:var(--logo-box-width);height:var(--logo-box-height);border-radius:var(--logo-box-radius);background:var(--logo-box);display:flex;align-items:center;justify-content:center;box-shadow:var(--logo-box-shadow);overflow:visible;flex-shrink:0;padding:var(--logo-padding);margin:0 auto;border:var(--logo-box-border)}
+.logoWrap img{width:100%;height:100%;object-fit:var(--logo-object-fit);display:block;margin:auto;filter:var(--logo-shadow);transform:scale(var(--logo-scale));transform-origin:center center}
+.brandText{line-height:1.22;color:var(--sidebar-text);text-align:center;width:100%;margin-top:12px}
+.brandText b{display:block;font-size:18px;line-height:1.16;letter-spacing:.1px;color:var(--sidebar-text);font-weight:950;text-align:center}
+.brandText span{display:block;font-size:11px;line-height:1.25;color:var(--sidebar-muted);margin-top:7px;font-weight:800;text-align:center}
+.nav{list-style:none;padding:20px 10px 0;margin:0;flex:1}
+.nav li{padding:12px 14px;margin:6px 0;border-radius:11px;color:var(--sidebar-text);cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:800;opacity:.92}
+.nav li:hover{background:rgba(255,255,255,.12);color:var(--sidebar-text);opacity:1}
+.nav li.active{background:var(--sidebar-active-bg);color:var(--sidebar-text);border-left:5px solid var(--sidebar-active-border);opacity:1}
+.nav .icon{width:18px;text-align:center}
+.sideFooter{padding:16px 18px;border-top:1px solid rgba(255,255,255,.25);font-size:11px;color:var(--sidebar-muted);line-height:1.55;font-weight:700}
+#main{flex:1;display:flex;flex-direction:column;min-width:0}
+#topbar{height:66px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;flex-shrink:0;z-index:20}
+.topLeft{display:flex;align-items:center;gap:13px;min-width:0}
+#pageTitle{font-size:18px;margin:0;font-weight:900;letter-spacing:-.25px}
+.clientPill{background:#fff7cc;color:#705a00;border:1px solid #f3dc4f;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:900}
+.freshness{font-size:11px;color:var(--muted);white-space:nowrap}
+.topRight{display:flex;align-items:center;gap:9px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px;font-weight:800;cursor:pointer;color:var(--ink)}
+.btn:hover{background:#f8fafc}
+.btn.primary{background:var(--export-button);border-color:var(--export-button);color:#fff}
+.content{flex:1;overflow:auto;padding:22px}
+.page{display:none}
+.page.active{display:block}
+#loadingOverlay{position:fixed;inset:0;background:rgba(15,23,42,.93);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;z-index:9999;transition:opacity .25s ease}
+.spinner{width:46px;height:46px;border:4px solid rgba(255,255,255,.18);border-top-color:var(--idac-yellow);border-radius:50%;animation:spin .9s linear infinite;margin-bottom:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loadingMsg{color:#cbd5e1;font-size:13px;margin-top:6px}
+.statusStrip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 14px;margin-bottom:14px}
+.sourceCompact{display:flex;gap:9px;flex-wrap:wrap}
+.srcBadge{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:#f8fafc;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:850;color:#334155}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--gray)}
+.dot.ok{background:var(--semantic-good)}
+.dot.loading{background:var(--semantic-watch)}
+.dot.warn{background:var(--semantic-watch)}
+.dot.bad{background:var(--semantic-bad)}
+.issueSummary{font-size:11px;color:var(--muted);font-weight:750}
+.issueSummary b{color:var(--ink)}
+.warnBanner{border-left:5px solid var(--amber);background:#fffbeb;color:#92400e;border-radius:12px;padding:10px 13px;margin-bottom:14px;font-size:12px;font-weight:700}
+.toolbar{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:900}
+.field input,.field select{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;min-width:155px;outline:none}
+.field input{min-width:295px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:900;color:#334155;cursor:pointer}
+.chip:hover{background:#f8fafc}
+.chip.active{background:#dcfce7;border-color:#86efac;color:#166534}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px;margin-bottom:16px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 1px 4px rgba(15,23,42,.035);position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--idac-yellow)}
+.kpi.green:before{background:var(--semantic-good,#00A150)}
+.kpi.red:before{background:var(--red)}
+.kpi.amber:before{background:var(--amber)}
+.kpi.blue:before{background:var(--blue)}
+.kpi.purple:before{background:var(--purple)}
+.kpi .label{font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:900;letter-spacing:.4px}
+.kpi .value{font-size:22px;font-weight:900;margin-top:5px;letter-spacing:-.45px}
+.kpi .sub{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.25}
+.tableShell{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:auto;max-height:58vh;box-shadow:0 1px 4px rgba(15,23,42,.04)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px}
+th,td{border-bottom:1px solid var(--line);border-right:1px solid #f1f5f9;padding:9px 10px;white-space:nowrap;vertical-align:middle}
+th{position:sticky;top:0;background:#f8fafc;color:#334155;font-size:11px;text-transform:uppercase;letter-spacing:.2px;z-index:8;cursor:pointer}
+tr:hover td{background:#fbfdff}
+.nameCell{max-width:360px;overflow:hidden;text-overflow:ellipsis}
+.badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900;line-height:1.2}
+.s-Active{background:#dcfce7;color:#166534}
+.s-NoSpend,.s-DataInvalid,.s-SpendAfterEndDate{background:#fee2e2;color:#991b1b}
+.s-Overspend{background:#ffedd5;color:#9a3412}
+.s-SetupOnly{background:#dbeafe;color:#1d4ed8}
+.s-Ended{background:#f1f5f9;color:#475569}
+.s-Future{background:#ede9fe;color:#6d28d9}
+.s-Unknown{background:#e2e8f0;color:#475569}
+.platform{border-radius:7px;text-transform:uppercase}
+.p-facebook,.p-meta{background:var(--facebook-blue, #1877F2);color:#FFFFFF}
+.p-tiktok{background:var(--tiktok-color,#111827);color:#fff}
+.p-line{background:var(--line-color,#06C755);color:#fff}
+.p-google,.p-youtube,.p-google-display,.p-display,.p-google-pmax,.p-demand-gen{background:var(--google-color,#DB4437);color:#fff}
+.p-other{background:#f1f5f9;color:#475569}
+.progress{width:118px}
+.progressTop{display:flex;justify-content:space-between;font-size:10px;font-weight:850;margin-bottom:4px}
+.track{height:7px;border-radius:999px;background:var(--progress-track);overflow:hidden}
+.fill{height:100%;border-radius:999px}
+.link{color:#047857;font-weight:900;text-decoration:none;cursor:pointer}
+.link:hover{text-decoration:underline}
+.empty{padding:36px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:16px}
+.hero{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
+.heroHead{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.hero h2{margin:4px 0 6px;font-size:20px;letter-spacing:-.35px}
+.metaLine{display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:12px}
+.bigScore{font-size:32px;font-weight:950;color:var(--weight-score-neutral,#64748b);line-height:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
+.card h3{font-size:13px;margin:0 0 10px;text-transform:uppercase;color:#334155;letter-spacing:.3px}
+.chartBox{height:280px}
+.rec{border-radius:16px;border-left:5px solid var(--blue);padding:14px 16px;margin-bottom:16px;background:#eff6ff;color:#1e40af}
+.rec.good{background:#f0fdf4;color:#166534;border-left-color:var(--semantic-good,#00A150)}
+.rec.watch{background:#fffbeb;color:#92400e;border-left-color:var(--amber)}
+.rec.critical{background:#fef2f2;color:#991b1b;border-left-color:var(--red)}
+.rankToolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.rankToolbar select{border:1px solid var(--line);border-radius:9px;padding:6px 8px;font-size:11px}
+.rankRow{margin-bottom:11px}
+.rankRow.campaignClickable{cursor:pointer;border-radius:8px;padding:4px;transition:background .14s ease}
+.rankRow.campaignClickable:hover,.rankRow.campaignClickable:focus{background:#f0fdf4;outline:none}
+.rankLabels{display:flex;justify-content:space-between;gap:10px;font-size:11px;font-weight:800;margin-bottom:4px}
+.rankName{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rankTrack{height:10px;border-radius:999px;background:#e2e8f0;overflow:hidden}
+.rankFill{height:100%;border-radius:999px;background:var(--rank-bar)}
+.dailyTable{width:100%;font-size:11px}
+.dailyTable th,.dailyTable td{padding:6px 7px}
+.smallNote{font-size:11px;color:var(--muted);line-height:1.35}
+@media(max-width:1280px){
+  #sidebar{width:228px}
+  .kpis{grid-template-columns:repeat(3,minmax(150px,1fr))}
+  .grid2{grid-template-columns:1fr}
+}
+
+.bigPicture{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px 16px;
+  margin-bottom:14px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+.bigPicture h3{
+  margin:0 0 6px;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.35px;
+  color:#334155;
+}
+.bigPictureText{
+  color:#334155;
+  font-weight:750;
+  line-height:1.45;
+}
+.platformSpend{
+  min-width:280px;
+  max-width:420px;
+}
+.platformSpendRow{
+  display:grid;
+  grid-template-columns:92px 1fr 86px;
+  gap:8px;
+  align-items:center;
+  margin:6px 0;
+  font-size:11px;
+  font-weight:800;
+}
+.platformSpendTrack{
+  height:8px;
+  border-radius:999px;
+  background:#e2e8f0;
+  overflow:hidden;
+}
+.platformSpendFill{
+  height:100%;
+  border-radius:999px;
+  background:var(--platform-spend-bar);
+}
+.campaignTitleMain{
+  display:block;
+  font-weight:800;
+  color:#111827;
+  max-width:350px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.campaignTitleSub{
+  display:block;
+  margin-top:2px;
+  font-size:10.5px;
+  color:#64748b;
+  font-weight:750;
+  max-width:350px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.monthLabel{
+  text-transform:none;
+}
+@media(max-width:1100px){.overviewPanels{grid-template-columns:1fr}.bigPicture{flex-direction:column}.platformSpend{max-width:none;width:100%}}
+
+.overviewPanels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;align-items:stretch}
+.overviewPanels .bigPicture{margin-bottom:0}
+.forecastWatchCard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:0 1px 4px rgba(15,23,42,.035);min-width:0}
+.forecastWatchCard h3{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.35px;color:#334155}
+.forecastList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:178px;overflow:auto;padding-right:3px}
+.forecastEmpty{padding:23px 12px;text-align:center;color:var(--muted);font-size:12px;font-weight:700;line-height:1.45}
+.forecastItem{border:1px solid var(--line);border-left:5px solid var(--amber);background:#fffbeb;border-radius:13px;padding:8px 10px;cursor:pointer;transition:background .14s ease,transform .14s ease}
+.forecastItem:hover{background:#fff7ed;transform:translateY(-1px)}
+.forecastItem.critical{border-left-color:var(--red);background:#fef2f2}
+.forecastItem.ok{border-left-color:var(--semantic-good,#00A150);background:#f0fdf4}
+.forecastTop{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:950;color:#1f2937}
+.forecastName{font-size:11.5px;line-height:1.3;margin-top:5px;font-weight:800;color:#334155;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.forecastMeta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;font-size:10.5px;font-weight:900;color:#64748b}
+.forecastPill{border:1px solid rgba(15,23,42,.08);background:#fff;border-radius:999px;padding:3px 7px}
+@media(max-width:720px){.forecastList{grid-template-columns:1fr}}
+@media(max-width:1100px){.overviewPanels{grid-template-columns:1fr}}
+
+
+.learningTag{
+  display:inline-flex;
+  border-radius:999px;
+  padding:3px 7px;
+  font-size:10px;
+  font-weight:900;
+  background:#f1f5f9;
+  color:#334155;
+  margin-right:4px;
+  margin-bottom:4px;
+}
+.talkPoint{
+  border-left:4px solid var(--blue);
+  background:#eff6ff;
+  color:#1e40af;
+  border-radius:12px;
+  padding:10px 12px;
+  margin-bottom:8px;
+  font-weight:750;
+  line-height:1.4;
+}
+.themeRow{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:12px;
+  padding:10px 12px;
+  margin-bottom:9px;
+}
+.themeRow b{display:block;margin-bottom:3px}
+.themeRow .bar{height:7px;border-radius:999px;background:#e2e8f0;overflow:hidden;margin-top:7px}
+.themeRow .fill{height:100%;background:var(--learning-theme-bar)}
+
+
+.performanceBrief{
+  background:#ffffff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px 16px;
+  margin-bottom:16px;
+  box-shadow:0 1px 4px rgba(15,23,42,.035);
+  border-left:5px solid var(--blue);
+}
+.performanceBrief.ontrack{border-left-color:var(--semantic-good,#00A150);background:#f0fdf4}
+.performanceBrief.watch{border-left-color:var(--amber);background:#fffbeb}
+.performanceBrief.action{border-left-color:var(--red);background:#fef2f2}
+.performanceBrief.monitoring{border-left-color:var(--blue);background:#eff6ff}
+.performanceBriefHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+.performanceBriefHead h3{
+  margin:0;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.35px;
+  color:#334155;
+}
+.briefSeverity{
+  border-radius:999px;
+  padding:4px 9px;
+  font-size:10px;
+  font-weight:900;
+  background:#fff;
+  border:1px solid rgba(15,23,42,.12);
+}
+.briefGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 14px;
+}
+.briefItem{
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(15,23,42,.06);
+  border-radius:12px;
+  padding:10px 11px;
+}
+.briefItem b{
+  display:block;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.35px;
+  color:#475569;
+  margin-bottom:4px;
+}
+.briefItem span{
+  color:#1f2937;
+  font-weight:750;
+  line-height:1.45;
+}
+@media(max-width:1100px){.briefGrid{grid-template-columns:1fr}}
+
+
+/* v11: Control Tower clickable row affordance */
+#campaignRows tr.campaignClickable{
+  cursor:pointer;
+  transition:background .14s ease, box-shadow .14s ease, transform .14s ease;
+}
+#campaignRows tr.campaignClickable:hover td{
+  background:var(--table-hover)!important;
+}
+#campaignRows tr.campaignClickable:hover td.stickyCol{
+  background:var(--table-hover-sticky)!important;
+}
+#campaignRows tr.campaignClickable:hover{
+  box-shadow:inset 4px 0 0 var(--row-accent);
+}
+#campaignRows tr.campaignClickable:hover .campaignTitleMain{
+  color:#047857;
+}
+#campaignRows tr.setupRow{
+  cursor:default;
+}
+#campaignRows tr.setupRow:hover td{
+  background:#f8fafc!important;
+}
+#campaignRows tr.setupRow:hover td.stickyCol{
+  background:#f1f5f9!important;
+}
+#campaignRows tr.campaignClickable:active td{
+  background:#fef3c7!important;
+}
+
+
+.syncState{
+  border:1px dashed #bfdbfe;
+  background:#eff6ff;
+  color:#1e40af;
+  border-radius:14px;
+  padding:18px;
+  text-align:center;
+  font-weight:800;
+}
+.postEndAlert{
+  border-left:5px solid var(--red);
+  background:#fef2f2;
+  color:#991b1b;
+  border-radius:14px;
+  padding:12px 14px;
+  margin-bottom:16px;
+  font-weight:800;
+  line-height:1.45;
+}
+.postEndAlert b{color:#7f1d1d}
+.dailyTable tr.postEndSpendRow td{
+  background:#fef2f2!important;
+  color:#991b1b;
+  font-weight:800;
+}
+
+
+.deepSelectorBar{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px;
+  display:flex;
+  align-items:end;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.deepSelectorBar .field select,.deepSelectorBar .field input{
+  min-width:180px;
+}
+.deepSelectorBar .field.deepCampaign select{
+  min-width:420px;
+}
+.restoreNote{
+  border-left:4px solid var(--blue);
+  background:#eff6ff;
+  color:#1e40af;
+  border-radius:12px;
+  padding:9px 12px;
+  margin-bottom:12px;
+  font-weight:750;
+}
+
+
+.platformFreshness{font-size:11px;color:#475569;font-weight:800;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.freshPill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 8px}
+.freshPill b{color:#0f172a}
+
+/* Source status semantic pills */
+.srcBadge.ok{background:#f0fdf4;border-color:#86efac;color:#166534}
+.srcBadge.loading{background:#fffbeb;border-color:#facc15;color:#92400e}
+.srcBadge.warn{background:#fff7ed;border-color:#fdba74;color:#9a3412}
+.srcBadge.bad{background:#fef2f2;border-color:#fca5a5;color:#991b1b}
+
+
+/* v7 repaired bar fill system */
+.track{background:var(--bar-track,#e5e7eb)!important}
+.platformSpendTrack,.rankTrack,.themeRow .bar{background:var(--bar-track,#e5e7eb)!important}
+.platformSpendFill{background:var(--platform-spend-bar,#00A150)!important;min-width:2px}
+.rankFill{background:var(--rank-bar,#cc2131)!important;min-width:2px}
+.themeRow .fill{background:var(--learning-theme-bar,#cc2131)!important;min-width:2px}
+.bigScore{color:var(--weight-score-neutral,#64748b)}
+.dot.ok{background:var(--semantic-good,#00A150)!important}
+.dot.loading,.dot.warn{background:var(--semantic-watch,#d97706)!important}
+.dot.bad{background:var(--semantic-bad,#dc2626)!important}
+
+
+
+
+/* ============================================================
+   CLEAN FREEZE COLUMN SYSTEM V6
+   Single source of truth.
+   Freezes BOTH table header (thead th) and body cells (tbody td)
+   for the first N columns selected in the dropdown.
+   ============================================================ */
+
+#tableShell {
+  overflow: auto !important;
+  position: relative !important;
+}
+
+#campaignTable {
+  table-layout: fixed !important;
+  width: max-content !important;
+  min-width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+#campaignTable th,
+#campaignTable td {
+  box-sizing: border-box !important;
+  background-clip: padding-box !important;
+}
+
+/* Fixed widths: header and body must use the same physical column width */
+#campaignTable th:nth-child(1),
+#campaignTable td:nth-child(1),
+#campaignTable .colStatus {
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
+}
+
+#campaignTable th:nth-child(2),
+#campaignTable td:nth-child(2),
+#campaignTable .colCode {
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
+}
+
+#campaignTable th:nth-child(3),
+#campaignTable td:nth-child(3),
+#campaignTable .colPlatform {
+  width: 105px !important;
+  min-width: 105px !important;
+  max-width: 105px !important;
+}
+
+#campaignTable th:nth-child(4),
+#campaignTable td:nth-child(4),
+#campaignTable .colObjective {
+  width: 140px !important;
+  min-width: 140px !important;
+  max-width: 140px !important;
+}
+
+#campaignTable th:nth-child(5),
+#campaignTable td:nth-child(5),
+#campaignTable .colName {
+  width: 330px !important;
+  min-width: 330px !important;
+  max-width: 330px !important;
+}
+
+#campaignTable th:nth-child(6),
+#campaignTable td:nth-child(6),
+#campaignTable .colWeight {
+  width: 115px !important;
+  min-width: 115px !important;
+  max-width: 115px !important;
+}
+
+#campaignTable th:nth-child(7),
+#campaignTable td:nth-child(7),
+#campaignTable .colBudget {
+  width: 130px !important;
+  min-width: 130px !important;
+  max-width: 130px !important;
+}
+
+/* Header is always frozen vertically */
+#campaignTable thead th {
+  position: sticky !important;
+  top: 0 !important;
+  left: auto !important;
+  z-index: 60 !important;
+  background: #f8fafc !important;
+  box-shadow: none !important;
+}
+
+/* Reset all body cells first. Only selected freeze mode will make them sticky. */
+#campaignTable tbody td.stickyCol {
+  position: static !important;
+  left: auto !important;
+  z-index: auto !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Column 1: Status */
+#tableShell.freeze1 #campaignTable thead th:nth-child(1),
+#tableShell.freeze2 #campaignTable thead th:nth-child(1),
+#tableShell.freeze3 #campaignTable thead th:nth-child(1),
+#tableShell.freeze4 #campaignTable thead th:nth-child(1),
+#tableShell.freeze5 #campaignTable thead th:nth-child(1),
+#tableShell.freeze6 #campaignTable thead th:nth-child(1),
+#tableShell.freeze1 #campaignTable tbody td:nth-child(1),
+#tableShell.freeze2 #campaignTable tbody td:nth-child(1),
+#tableShell.freeze3 #campaignTable tbody td:nth-child(1),
+#tableShell.freeze4 #campaignTable tbody td:nth-child(1),
+#tableShell.freeze5 #campaignTable tbody td:nth-child(1),
+#tableShell.freeze6 #campaignTable tbody td:nth-child(1) {
+  position: sticky !important;
+  left: 0 !important;
+}
+
+/* Column 2: Campaign Code */
+#tableShell.freeze2 #campaignTable thead th:nth-child(2),
+#tableShell.freeze3 #campaignTable thead th:nth-child(2),
+#tableShell.freeze4 #campaignTable thead th:nth-child(2),
+#tableShell.freeze5 #campaignTable thead th:nth-child(2),
+#tableShell.freeze6 #campaignTable thead th:nth-child(2),
+#tableShell.freeze2 #campaignTable tbody td:nth-child(2),
+#tableShell.freeze3 #campaignTable tbody td:nth-child(2),
+#tableShell.freeze4 #campaignTable tbody td:nth-child(2),
+#tableShell.freeze5 #campaignTable tbody td:nth-child(2),
+#tableShell.freeze6 #campaignTable tbody td:nth-child(2) {
+  position: sticky !important;
+  left: 120px !important;
+}
+
+/* Column 3: Platform */
+#tableShell.freeze3 #campaignTable thead th:nth-child(3),
+#tableShell.freeze4 #campaignTable thead th:nth-child(3),
+#tableShell.freeze5 #campaignTable thead th:nth-child(3),
+#tableShell.freeze6 #campaignTable thead th:nth-child(3),
+#tableShell.freeze3 #campaignTable tbody td:nth-child(3),
+#tableShell.freeze4 #campaignTable tbody td:nth-child(3),
+#tableShell.freeze5 #campaignTable tbody td:nth-child(3),
+#tableShell.freeze6 #campaignTable tbody td:nth-child(3) {
+  position: sticky !important;
+  left: 240px !important;
+}
+
+/* Column 4: Objective */
+#tableShell.freeze4 #campaignTable thead th:nth-child(4),
+#tableShell.freeze5 #campaignTable thead th:nth-child(4),
+#tableShell.freeze6 #campaignTable thead th:nth-child(4),
+#tableShell.freeze4 #campaignTable tbody td:nth-child(4),
+#tableShell.freeze5 #campaignTable tbody td:nth-child(4),
+#tableShell.freeze6 #campaignTable tbody td:nth-child(4) {
+  position: sticky !important;
+  left: 345px !important;
+}
+
+/* Column 5: Campaign Name */
+#tableShell.freeze5 #campaignTable thead th:nth-child(5),
+#tableShell.freeze6 #campaignTable thead th:nth-child(5),
+#tableShell.freeze5 #campaignTable tbody td:nth-child(5),
+#tableShell.freeze6 #campaignTable tbody td:nth-child(5) {
+  position: sticky !important;
+  left: 485px !important;
+}
+
+/* Column 6: Weight Score */
+#tableShell.freeze6 #campaignTable thead th:nth-child(6),
+#tableShell.freeze6 #campaignTable tbody td:nth-child(6) {
+  position: sticky !important;
+  left: 815px !important;
+}
+
+/* Layering: frozen header > normal header > frozen body > normal body */
+#campaignTable thead th {
+  z-index: 60 !important;
+}
+
+#tableShell.freeze1 #campaignTable thead th:nth-child(1),
+#tableShell.freeze2 #campaignTable thead th:nth-child(-n+2),
+#tableShell.freeze3 #campaignTable thead th:nth-child(-n+3),
+#tableShell.freeze4 #campaignTable thead th:nth-child(-n+4),
+#tableShell.freeze5 #campaignTable thead th:nth-child(-n+5),
+#tableShell.freeze6 #campaignTable thead th:nth-child(-n+6) {
+  z-index: 100 !important;
+  background: #f8fafc !important;
+}
+
+#tableShell.freeze1 #campaignTable tbody td:nth-child(1),
+#tableShell.freeze2 #campaignTable tbody td:nth-child(-n+2),
+#tableShell.freeze3 #campaignTable tbody td:nth-child(-n+3),
+#tableShell.freeze4 #campaignTable tbody td:nth-child(-n+4),
+#tableShell.freeze5 #campaignTable tbody td:nth-child(-n+5),
+#tableShell.freeze6 #campaignTable tbody td:nth-child(-n+6) {
+  z-index: 40 !important;
+  background: #ffffff !important;
+}
+
+/* Right-edge shadow on the last frozen column only */
+#tableShell.freeze1 #campaignTable thead th:nth-child(1),
+#tableShell.freeze1 #campaignTable tbody td:nth-child(1),
+#tableShell.freeze2 #campaignTable thead th:nth-child(2),
+#tableShell.freeze2 #campaignTable tbody td:nth-child(2),
+#tableShell.freeze3 #campaignTable thead th:nth-child(3),
+#tableShell.freeze3 #campaignTable tbody td:nth-child(3),
+#tableShell.freeze4 #campaignTable thead th:nth-child(4),
+#tableShell.freeze4 #campaignTable tbody td:nth-child(4),
+#tableShell.freeze5 #campaignTable thead th:nth-child(5),
+#tableShell.freeze5 #campaignTable tbody td:nth-child(5),
+#tableShell.freeze6 #campaignTable thead th:nth-child(6),
+#tableShell.freeze6 #campaignTable tbody td:nth-child(6) {
+  box-shadow: 8px 0 12px -12px rgba(0,0,0,.45) !important;
+}
+
+/* Campaign name text should not stretch the table */
+.nameCell,
+.campaignTitleMain,
+.campaignTitleSub {
+  max-width: 300px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* ============================================================
+   FONT WEIGHT SOFTENING PATCH
+   Make dashboard numbers less heavy / more professional
+   ============================================================ */
+
+body,
+button,
+input,
+select,
+table,
+td,
+th {
+  font-weight: 400;
+}
+
+/* Main text / labels */
+th,
+.field label,
+.kpi .label,
+.card h3,
+.bigPicture h3,
+.performanceBriefHead h3 {
+  font-weight: 700 !important;
+}
+
+/* KPI card numbers */
+.kpi .value {
+  font-weight: 700 !important;
+  letter-spacing: -0.2px !important;
+}
+
+/* Table numbers and campaign data */
+td,
+.progressTop,
+.rankLabels,
+.platformSpendRow,
+.dailyTable td,
+.dailyTable th {
+  font-weight: 600 !important;
+}
+
+/* Very large score */
+.bigScore {
+  font-weight: 700 !important;
+}
+
+/* Sidebar / nav still strong but not too heavy */
+.brandText b {
+  font-weight: 800 !important;
+}
+
+.brandText span,
+.nav li,
+.sideFooter {
+  font-weight: 650 !important;
+}
+
+/* Buttons */
+.btn,
+.btn.primary {
+  font-weight: 700 !important;
+}
+
+/* Badges */
+.badge,
+.platform,
+.chip,
+.srcBadge,
+.clientPill {
+  font-weight: 700 !important;
+}
+
+/* Chart labels if generated as SVG text */
+svg text {
+  font-weight: 500 !important;
+}
+
+
+/* ============================================================
+   LEARNING LOG READABILITY PATCH
+   - Hide Status from the visible Learning table/filter
+   - Allow long insight text to wrap inside Learning table only
+   ============================================================ */
+.learningTableShell{
+  max-height:52vh;
+  overflow:auto;
+}
+.learningTable{
+  table-layout:fixed;
+  min-width:1500px;
+}
+.learningTable th,
+.learningTable td{
+  white-space:normal!important;
+  vertical-align:top!important;
+  line-height:1.45;
+  word-break:break-word;
+}
+.learningTable .nameCell{
+  max-width:none!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+.learningTable th:nth-child(1),
+.learningTable td:nth-child(1){width:95px}
+.learningTable th:nth-child(2),
+.learningTable td:nth-child(2){width:95px}
+.learningTable th:nth-child(3),
+.learningTable td:nth-child(3){width:220px}
+.learningTable th:nth-child(4),
+.learningTable td:nth-child(4){width:105px}
+.learningTable th:nth-child(5),
+.learningTable td:nth-child(5),
+.learningTable th:nth-child(6),
+.learningTable td:nth-child(6),
+.learningTable th:nth-child(7),
+.learningTable td:nth-child(7),
+.learningTable th:nth-child(8),
+.learningTable td:nth-child(8){width:300px}
+
+</style>
+<!-- Date parsing: Campaign_Overview uses DD/MM/YYYY; Daily Breakdown and Target/Creative use MM/DD/YYYY. Month selector uses Overview Start/End overlap. -->
+<!-- v8: Learning Intelligence is isolated. It does not use global Campaign_Overview parser, so Control Tower remains stable. -->
+<!-- v9: Money cards moved first; Facebook badge dark blue; Summary Big Picture replaced by Latest Movement Brief. -->
+<!-- v10: Added Campaign Performance Brief above daily charts with Situation, Movement, Top Performer, Action Needed. -->
+<!-- v11: Control Tower rows use idac yellow hover highlight and whole-row click to Deep Analytics. -->
+<!-- v14: Progressive Sync State. Deep Analytics waits for Daily source before saying no rows; post-end cleanup only after Daily is loaded. -->
+<!-- v15: Deep Analytics has its own Month/Platform/Campaign selector and Refresh Data preserves current page + selected campaign. -->
+<!-- v16: D-1 auto-yesterday, platform data-through freshness, and stronger Deep Analytics restore after refresh. -->
+<!-- v2 theme playground: sidebar layout, sidebar text color, logo box, hover row, export color, and source badge semantics are config-driven. -->
+<!-- v3: Centered sidebar brand block, larger logo frame, centered client/team text, config-driven progress bars. -->
+<!-- v6: separates CI brand colors from semantic status/performance colors. Budget/KPI/source status/platform spend no longer blindly use CI color. -->
+<!-- v7: repaired missing fill colors with CSS variable fallbacks for platform spend, rankings, learning themes, daily charts, and progress bars. -->
+<!-- v9: logo area uses transparent/no-card mode with slight logo shadow, larger edge-to-edge presentation, while preserving full-row click. -->
+<!-- v11: patched from user file; Deep Analytics Weight Score now uses semantic color function instead of red .bigScore fallback. -->
+<!-- v12: Added Objective filter after Platform and moved Objective column next to Platform in Control Tower table. -->
+</head>
+<body>
+<div id="loadingOverlay">
+  <div class="spinner"></div>
+  <h2 id="loadingBrandTitle" style="margin:0">Media Control Tower</h2>
+  <div id="loadingText" class="loadingMsg">Loading Campaign_Overview...</div>
+</div>
+
+<aside id="sidebar">
+  <div class="brand">
+    <div class="logoWrap"><img src="https://i.postimg.cc/gJMXpV1j/pngegg-800x800.png" alt="idac Logo"></div>
+    <div class="brandText"><b>idac </b><span>i-dac Media Ops</span></div>
+  </div>
+  <ul class="nav">
+    <li class="active" data-page="control" onclick="showPage('control')"><span class="icon">▦</span>Control Tower</li>
+    <li data-page="deep" onclick="showPage('deep')"><span class="icon">▧</span>Deep Analytics</li>
+    <li data-page="learning" onclick="showPage('learning')"><span class="icon">◈</span>Learning Intelligence</li>
+  </ul>
+  <div class="sideFooter">
+    <b>Developed by I-dac Bu10</b><br>
+    planner-bu10@i-dacasia.com<br>
+  </div>
+</aside>
+
+<main id="main">
+  <header id="topbar">
+    <div class="topLeft">
+      <h1 id="pageTitle">Control Tower</h1>
+      <span class="clientPill">idac</span>
+      <span id="freshness" class="freshness">Waiting for source...</span>
+    </div>
+    <div class="topRight">
+      <button class="btn" onclick="refreshData()">Refresh Data</button>
+      <button class="btn primary" onclick="exportVisibleCsv()">Export Visible CSV</button>
+    </div>
+  </header>
+
+  <section id="page-control" class="content page active">
+    <div class="statusStrip">
+      <div class="sourceCompact">
+        <span id="src-overview" class="srcBadge"><span class="dot loading"></span>Campaign Overview: Loading</span>
+        <span id="src-daily" class="srcBadge"><span class="dot loading"></span>Daily Breakdown: Loading</span>
+        <span id="src-target" class="srcBadge"><span class="dot loading"></span>Target & Creative: Loading</span>
+        <span id="src-learning" class="srcBadge"><span class="dot loading"></span>Learning Log: Loading</span>
+      </div>
+      <div><div id="platformFreshness" class="platformFreshness">Checking data freshness...</div><div id="issueSummary" class="issueSummary" style="margin-top:4px">Checking setup issues...</div></div>
+    </div>
+    <div id="warningArea"></div>
+    <div class="overviewPanels">
+      <div id="bigPicture" class="bigPicture"></div>
+      <div id="forecastWatchlist" class="forecastWatchCard"></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="field"><label>Month</label><select id="monthFilter" onchange="renderControl()"></select></div>
+      <div class="field"><label>Platform</label><select id="platformFilter" onchange="renderControl()"><option value="ALL">All Platforms</option></select></div>
+      <div class="field"><label>Objective</label><select id="objectiveFilter" onchange="renderControl()"><option value="ALL">All Objectives</option></select></div>
+      <div class="field"><label>Status</label><select id="statusFilter" onchange="renderControl()"><option value="ALL">All Statuses</option></select></div>
+      <div class="field"><label>Freeze Columns</label><select id="freezeMode" onchange="applyFreezeMode()">
+<option value="1">1 column</option>
+<option value="2">2 columns</option>
+<option value="3" selected>3 columns</option>
+<option value="4">4 columns</option>
+<option value="5">5 columns</option>
+<option value="6">6 columns</option>
+</select></div>
+      <div class="field" style="flex:1"><label>Search</label><input id="searchBox" oninput="renderControl()" placeholder="Search Campaign Code, Campaign Name, Objective..." /></div>
+    </div>
+    <div id="statusChips" class="chips"></div>
+
+    <div id="kpiGrid" class="kpis"></div>
+
+    <div id="tableShell" class="tableShell freeze3">
+      <table id="campaignTable">
+        <thead>
+          <tr>
+            <th class="stickyCol colStatus" onclick="sortBy('status')">Status</th>
+            <th class="stickyCol colCode" onclick="sortBy('code')">Campaign Code</th>
+            <th class="stickyCol colPlatform" onclick="sortBy('platform')">Platform</th>
+            <th class="stickyCol colObjective" onclick="sortBy('objective')">Objective</th>
+            <th class="stickyCol colName" onclick="sortBy('name')">Campaign Name</th>
+            <th class="stickyCol colWeight" onclick="sortBy('weightScore')">Weight Score</th>
+            <th class="stickyCol colBudget">% Budget</th>
+            <th>% KPI Result</th>
+            <th onclick="sortBy('startDate')">Start</th>
+            <th onclick="sortBy('endDate')">End</th>
+            <th onclick="sortBy('budget')">Planner Budget</th>
+            <th onclick="sortBy('spend')">Actual Spend</th>
+            <th onclick="sortBy('result')">Actual Result</th>
+            <th onclick="sortBy('cpr')">CPR / Metric</th>
+            <th>TD Preview</th>
+            <th>Remark</th>
+          </tr>
+        </thead>
+        <tbody id="campaignRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="page-deep" class="content page">
+
+    <div id="deepRestoreNote" class="restoreNote hidden"></div>
+    <div class="deepSelectorBar">
+      <div class="field"><label>Month</label><select id="deepMonth" onchange="updateDeepCampaignOptions(false)"><option value="ALL">All Months</option></select></div>
+      <div class="field"><label>Platform</label><select id="deepPlatform" onchange="updateDeepCampaignOptions(false)"><option value="ALL">All Platforms</option></select></div>
+      <div class="field deepCampaign"><label>Campaign</label><select id="deepCampaignSelect" onchange="selectDeepCampaignFromDropdown()"><option value="">Select Campaign</option></select></div>
+      <div class="field" style="flex:1"><label>Search Campaign</label><input id="deepCampaignSearch" oninput="updateDeepCampaignOptions(false)" placeholder="Search campaign code or campaign name..." /></div>
+      <button class="btn" onclick="resetDeepSelection()">Reset View</button>
+    </div>
+
+    <div id="deepEmpty" class="empty"><b>No Campaign Selected</b><br>Select a campaign from the dropdown above or click a campaign row from Control Tower.</div>
+    <div id="deepWrap" class="hidden">
+      <div id="deepHero" class="hero"></div>
+      <div id="deepKpis" class="kpis"></div>
+      <div id="deepRec" class="rec"></div>
+      <div id="performanceBrief" class="performanceBrief monitoring"></div>
+      <div id="postEndAlert" class="postEndAlert hidden"></div>
+      <div class="grid2">
+        <div class="card"><h3>Daily Spend Bar Chart</h3><div id="spendChart" class="chartBox"></div></div>
+        <div class="card"><h3>Daily Result Bar Chart</h3><div id="resultChart" class="chartBox"></div></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="rankToolbar"><h3 style="margin:0">Target / Ad Set Ranking</h3><select id="targetViewMode" onchange="rerenderDeepRankings()"><option value="total">Total</option><option value="daily">Daily</option></select></div><div id="targetRank"></div></div>
+        <div class="card"><div class="rankToolbar"><h3 style="margin:0">Creative / Ads Ranking</h3><select id="creativeViewMode" onchange="rerenderDeepRankings()"><option value="total">Total</option><option value="daily">Daily</option></select></div><div id="creativeRank"></div></div>
+      </div>
+      <div class="card"><h3>Daily Delivery Table</h3><div id="dailyDeliveryTable"></div></div>
+    </div>
+  </section>
+
+  <section id="page-learning" class="content page">
+    <div class="toolbar">
+      <div class="field"><label>Month</label><select id="learningMonth" onchange="renderLearning()"><option value="ALL">All</option></select></div>
+      <div class="field"><label>Platform</label><select id="learningPlatform" onchange="renderLearning()"><option value="ALL">All</option></select></div>
+      <div class="field"><label>KPI Metric</label><select id="learningMetric" onchange="renderLearning()"><option value="ALL">All</option></select></div>
+      <div class="field" style="flex:1"><label>Search Learning</label><input id="learningSearch" oninput="renderLearning()" placeholder="Search issue, action, campaign topic, reusable insight..." /></div>
+    </div>
+
+    <div id="learningSummary" class="bigPicture"></div>
+    <div id="learningCards" class="kpis"></div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Presentation Talking Points</h3>
+        <div id="talkingPoints"></div>
+      </div>
+      <div class="card">
+        <h3>Learning Themes</h3>
+        <div id="learningThemes"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Historical Learning Map</h3>
+      <div class="tableShell learningTableShell">
+        <table class="learningTable">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Platform</th>
+              <th>Campaign Topic</th>
+              <th>KPI Metric</th>
+              <th>Issue Raised</th>
+              <th>Result Learning</th>
+              <th>Next Watchout</th>
+              <th>Suggested Action</th>
+            </tr>
+          </thead>
+          <tbody id="learningRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+
+/* ============================================================
+   REUSABLE BRAND TEMPLATE CONFIG
+   Change only this block when reusing for a new brand/client.
+   Keep CSV schema the same:
+   Campaign_Overview / Daily Breakdown / Target & Creative / Learning_Log
+
+   Quick idea:
+   - Change clientName, teamName, logoUrl
+   - Change colors below
+   - Do not touch the dashboard logic unless data schema changes
+   ============================================================ */
+const BRAND_CONFIG = {
+ clientName: "CJ Express",
+ teamName: "i-dac Media BU10",
+ logoUrl: "https://i.postimg.cc/L4gs0xm0/pngegg-800x800.png",
+ primaryColor: "#009950",
+ secondaryColor: "#009950",
+ actionColor: "#009950",
+ sidebarColor: "#009950",
+ sidebarColorDark: "#009950",
+ sidebarTextColor: "#ffffff",
+ sidebarMutedTextColor: "#e5e5e5",
+ sidebarActiveBg: "rgba(255,255,255,0.16)",
+ sidebarActiveBorder: "#ffffff",
+logoBoxColor: "transparent",
+logoBoxRadius: "0px",
+logoBoxWidth: "180px",
+logoBoxHeight: "180px",
+logoBoxShadow: "none",
+logoBoxBorder: "none",
+logoPadding: "0px",
+logoShadow: "drop-shadow(0px 4px 6px rgba(0,0,0,0.25))",
+logoObjectFit: "contain",
+logoScale: 1,
+ tableHoverColor: "#f5f5f5",
+ tableHoverStickyColor: "#eaeaea",
+ rowAccentColor: "#009950",
+ progressBudgetColor: "#009950",
+ progressKpiColor: "#009950",
+ progressGoodColor: "#28a745",
+ progressWatchColor: "#ffc107",
+ progressOverColor: "#dc3545",
+ progressTrackColor: "#e9ecef",
+ barPrimaryColor: "#009950",
+ barSecondaryColor: "#6c757d",
+ barTrackColor: "#e9ecef",
+ dailyChartBarColor: "#009950",
+ rankBarColor: "#009950",
+ learningThemeBarColor: "#009950",
+ semanticGoodColor: "#28a745",
+ semanticWatchColor: "#ffc107",
+ semanticBadColor: "#dc3545",
+ semanticInfoColor: "#17a2b8",
+ semanticTrackColor: "#e9ecef",
+ useSemanticProgressColors: true,
+ budgetNormalColor: "#28a745",
+ budgetOverColor: "#dc3545",
+ kpiGoodColor: "#28a745",
+ kpiNormalColor: "#007bff",
+ kpiWatchColor: "#ffc107",
+ platformSpendBarColor: "#009950",
+ weightScoreGoodColor: "#28a745",
+ weightScoreWatchColor: "#ffc107",
+ weightScoreBadColor: "#dc3545",
+ weightScoreNeutralColor: "#6c757d",
+ exportButtonColor: "#009950",
+ refreshButtonColor: "#009950",
+ facebookColor: "#1877F2",
+ tiktokColor: "#111827",
+ lineColor: "#06C755",
+ googleColor: "#DB4437",
+ d1Date: "AUTO",
+ spendAfterEndThreshold: 50
+};
+
+const DATA_SOURCES = {
+ overview: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOXPkFVDV1agXgxkZOzLkqhPCb_VSdFNKqwO7sia0TzavGhrGs4DDOJ4BkHeN8sItcQriy6md6CS1/pub?gid=802241024&single=true&output=csv",
+ daily: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOXPkFVDV1agXgxkZOzLkqhPCb_VSdFNKqwO7sia0TzavGhrGs4DDOJ4BkHeN8sItcQriy6md6CS1/pub?gid=646664696&single=true&output=csv",
+ target: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOXPkFVDV1agXgxkZOzLkqhPCb_VSdFNKqwO7sia0TzavGhrGs4DDOJ4BkHeN8sItcQriy6md6CS1/pub?gid=517854257&single=true&output=csv",
+ learning: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOXPkFVDV1agXgxkZOzLkqhPCb_VSdFNKqwO7sia0TzavGhrGs4DDOJ4BkHeN8sItcQriy6md6CS1/pub?gid=230530310&single=true&output=csv"
+};
+
+const CONFIG = {
+ clientName: BRAND_CONFIG.clientName,
+ defaultMonth: "AUTO",
+ d1Date: BRAND_CONFIG.d1Date,
+ spendAfterEndThreshold: BRAND_CONFIG.spendAfterEndThreshold,
+ urls: DATA_SOURCES
+};
+
+const STATE_KEY =
+  "idac_dashboard_state_" +
+  (BRAND_CONFIG.clientName || "client")
+    .replace(/\s+/g, "_")
+    .replace(/[^a-zA-Z0-9_]/g, "")
+    .toLowerCase() +
+  "_v16";
+
+const ALIASES = {
+  code:["campaign code","campaigncode","code","campaign id","campaign_id","prefix"],
+  platform:["platform","media","channel","publisher"],
+  objective:["objective","media objective","campaign objective","kpi objective"],
+  name:["campaign name","campaign","campaign title","content name","topic","content / topic"],
+  start:["start date","start","campaign start","run start","run start date"],
+  end:["end date","end","campaign end","run end","run end date"],
+  budget:["planner budget","plan budget","planned budget","setup budget","media budget","allocated budget","budget"],
+  spend:["actual spend","spend","mtd spend","amount spent"],
+  dailySpend:["daily spend","actual daily spend","acutal daily spend","spend"],
+  result:["actual result","result","results","mtd result","kpi result actual","result from metric"],
+  dailyResult:["daily result","actual daily result","result","results"],
+  metric:["metric","kpi metric","result metric"],
+  kpi:["kpi result","target result","target kpi","kpi"],
+  cpr:["cost per result","cpr","actual cpr","daily cost per result","cost/result","cost per kpi"],
+  weight:["weight score","weight target score","weight creative score","score","performance score","smart score"],
+  remark:["remark","remarks","recommendation","recommended action","comment","notes"],
+  td:["td preview link","td preview","preview","preview link","ads preview","creative preview","td link","link preview","preview url","material link","post link","link"],
+  date:["report date","date","day","daily date"],
+  targetName:["ads set","ad set","adset","target","audience","ad group","target name"],
+  creativeName:["ads","ad name","creative name","creative","content topic","content name"],
+  focusAdSet:["focus ad set","focus adset","focus ads set","focus target","focus audience","focused ad set"],
+  impressions:["impressions","impression","impr."],
+  clicks:["clicks","clicks (all)","all clicks","link clicks"],
+  ctr:["ctr","click through rate","click-through rate"],
+  forecast:["% forecast","forecast %","% forecast hit","forecast hit %","forecast hit","forecast result %","forecast kpi %","forecast kpi result"]
+};
+const state={raw:{},data:{overview:[],daily:[],target:[],learning:[]},status:{overview:"Loading",daily:"Loading",target:"Loading",learning:"Loading"},health:[],stats:{missingCode:0},selected:null,scope:null,sort:{key:"status",dir:1},filtered:[],ui:{currentPage:'control',selectedCode:null,scopeKey:null,deepMonth:'ALL',deepPlatform:'ALL',deepSearch:''},chip:"ALL"};
+function $(id){return document.getElementById(id)}
+
+function applyBrandConfig(){
+  document.title = `${BRAND_CONFIG.clientName} | i-dac Media Control Tower`;
+  document.documentElement.style.setProperty("--idac-yellow", BRAND_CONFIG.primaryColor);
+  document.documentElement.style.setProperty("--idac-green", BRAND_CONFIG.secondaryColor);
+  document.documentElement.style.setProperty("--sidebar", BRAND_CONFIG.sidebarColor);
+  document.documentElement.style.setProperty("--sidebar-dark", BRAND_CONFIG.sidebarColorDark || BRAND_CONFIG.sidebarColor);
+  document.documentElement.style.setProperty("--sidebar-text", BRAND_CONFIG.sidebarTextColor || "#ffffff");
+  document.documentElement.style.setProperty("--sidebar-muted", BRAND_CONFIG.sidebarMutedTextColor || BRAND_CONFIG.sidebarTextColor || "#ffffff");
+  document.documentElement.style.setProperty("--sidebar-active-bg", BRAND_CONFIG.sidebarActiveBg || "rgba(255,255,255,0.16)");
+  document.documentElement.style.setProperty("--sidebar-active-border", BRAND_CONFIG.sidebarActiveBorder || BRAND_CONFIG.sidebarTextColor || "#ffffff");
+  document.documentElement.style.setProperty("--logo-box", BRAND_CONFIG.logoBoxColor || "transparent");
+  document.documentElement.style.setProperty("--logo-box-radius", BRAND_CONFIG.logoBoxRadius || "0px");
+  document.documentElement.style.setProperty("--logo-box-width", BRAND_CONFIG.logoBoxWidth || "172px");
+  document.documentElement.style.setProperty("--logo-box-height", BRAND_CONFIG.logoBoxHeight || "96px");
+  document.documentElement.style.setProperty("--logo-box-shadow", BRAND_CONFIG.logoBoxShadow || "none");
+  document.documentElement.style.setProperty("--logo-box-border", BRAND_CONFIG.logoBoxBorder || "none");
+  document.documentElement.style.setProperty("--logo-padding", BRAND_CONFIG.logoPadding || "0px");
+  document.documentElement.style.setProperty("--logo-shadow", BRAND_CONFIG.logoShadow || "drop-shadow(0 4px 10px rgba(0,0,0,.14))");
+  document.documentElement.style.setProperty("--logo-object-fit", BRAND_CONFIG.logoObjectFit || "contain");
+  document.documentElement.style.setProperty("--logo-scale", BRAND_CONFIG.logoScale || "1.08");
+  document.documentElement.style.setProperty("--table-hover", BRAND_CONFIG.tableHoverColor || "#fffbea");
+  document.documentElement.style.setProperty("--table-hover-sticky", BRAND_CONFIG.tableHoverStickyColor || "#fff3b8");
+  document.documentElement.style.setProperty("--row-accent", BRAND_CONFIG.rowAccentColor || BRAND_CONFIG.primaryColor);
+  document.documentElement.style.setProperty("--progress-budget", BRAND_CONFIG.progressBudgetColor || BRAND_CONFIG.secondaryColor);
+  document.documentElement.style.setProperty("--progress-kpi", BRAND_CONFIG.progressKpiColor || BRAND_CONFIG.primaryColor);
+  document.documentElement.style.setProperty("--progress-good", BRAND_CONFIG.progressGoodColor || "#00A150");
+  document.documentElement.style.setProperty("--progress-watch", BRAND_CONFIG.progressWatchColor || "#d97706");
+  document.documentElement.style.setProperty("--progress-over", BRAND_CONFIG.progressOverColor || "#dc2626");
+  document.documentElement.style.setProperty("--progress-track", BRAND_CONFIG.progressTrackColor || "#e5e7eb");
+  document.documentElement.style.setProperty("--export-button", BRAND_CONFIG.exportButtonColor || "#00A150");
+    document.documentElement.style.setProperty("--platform-spend-bar", BRAND_CONFIG.platformSpendBarColor || BRAND_CONFIG.semanticGoodColor || "#00A150");
+  document.documentElement.style.setProperty("--rank-bar", BRAND_CONFIG.rankBarColor || BRAND_CONFIG.barPrimaryColor || BRAND_CONFIG.primaryColor || "#cc2131");
+  document.documentElement.style.setProperty("--learning-theme-bar", BRAND_CONFIG.learningThemeBarColor || BRAND_CONFIG.barPrimaryColor || BRAND_CONFIG.primaryColor || "#cc2131");
+  document.documentElement.style.setProperty("--daily-chart-bar", BRAND_CONFIG.dailyChartBarColor || BRAND_CONFIG.barPrimaryColor || BRAND_CONFIG.primaryColor || "#cc2131");
+  document.documentElement.style.setProperty("--bar-track", BRAND_CONFIG.barTrackColor || BRAND_CONFIG.semanticTrackColor || "#e5e7eb");
+  document.documentElement.style.setProperty("--budget-normal", BRAND_CONFIG.budgetNormalColor || BRAND_CONFIG.semanticGoodColor || "#00A150");
+  document.documentElement.style.setProperty("--budget-over", BRAND_CONFIG.budgetOverColor || BRAND_CONFIG.semanticBadColor || "#dc2626");
+  document.documentElement.style.setProperty("--kpi-good", BRAND_CONFIG.kpiGoodColor || BRAND_CONFIG.semanticGoodColor || "#00A150");
+  document.documentElement.style.setProperty("--kpi-normal", BRAND_CONFIG.kpiNormalColor || BRAND_CONFIG.semanticInfoColor || "#2563eb");
+  document.documentElement.style.setProperty("--kpi-watch", BRAND_CONFIG.kpiWatchColor || BRAND_CONFIG.semanticWatchColor || "#d97706");
+    document.documentElement.style.setProperty("--weight-score-good", BRAND_CONFIG.weightScoreGoodColor || BRAND_CONFIG.semanticGoodColor || "#00A150");
+  document.documentElement.style.setProperty("--weight-score-watch", BRAND_CONFIG.weightScoreWatchColor || BRAND_CONFIG.semanticWatchColor || "#d97706");
+  document.documentElement.style.setProperty("--weight-score-bad", BRAND_CONFIG.weightScoreBadColor || BRAND_CONFIG.semanticBadColor || "#dc2626");
+  document.documentElement.style.setProperty("--weight-score-neutral", BRAND_CONFIG.weightScoreNeutralColor || "#64748b");
+  document.documentElement.style.setProperty("--facebook-blue", BRAND_CONFIG.facebookColor || "#1877F2");
+  document.documentElement.style.setProperty("--tiktok-color", BRAND_CONFIG.tiktokColor || "#111827");
+  document.documentElement.style.setProperty("--line-color", BRAND_CONFIG.lineColor || "#06C755");
+  document.documentElement.style.setProperty("--google-color", BRAND_CONFIG.googleColor || "#DB4437");
+  document.querySelectorAll(".brandText b").forEach(el=>el.textContent=BRAND_CONFIG.clientName);
+  document.querySelectorAll(".brandText span").forEach(el=>el.textContent=BRAND_CONFIG.teamName || "i-dac Media Ops");
+  document.querySelectorAll(".clientPill").forEach(el=>el.textContent=BRAND_CONFIG.clientName);
+  document.querySelectorAll(".logoWrap img").forEach(el=>{el.src=BRAND_CONFIG.logoUrl; el.alt=BRAND_CONFIG.clientName+" Logo";});
+  const loadingTitle=document.getElementById("loadingBrandTitle"); if(loadingTitle) loadingTitle.textContent=`${BRAND_CONFIG.clientName} Control Tower`;
+}
+
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function escapeAttr(v){return escapeHtml(v).replace(/`/g,"&#096;")}
+function addHealth(severity,source,rule,issue,context,fix){state.health.push({severity,source,rule,issue,context,fix})}
+function setSourceStatus(key,status){
+  state.status[key]=status;
+  const label={overview:"Campaign Overview",daily:"Daily Breakdown",target:"Target & Creative",learning:"Learning Log"}[key];
+  const userStatus = status==="Using Alias" ? "Loaded" : status;
+  const cls = userStatus==="Loaded"?"ok":userStatus==="Loading"?"loading":userStatus==="Optional Missing"||userStatus==="0 Rows"?"warn":"bad";
+  const el=$("src-"+key);
+  if(el){
+    el.className=`srcBadge ${cls}`;
+    el.innerHTML=`<span class="dot ${cls}"></span>${label}: ${userStatus}`;
+  }
+}
+function timeoutFetch(url,ms){
+  const controller=new AbortController(); const t=setTimeout(()=>controller.abort(),ms);
+  return fetch(url+"&_cb="+Date.now(),{signal:controller.signal}).then(r=>{clearTimeout(t);if(!r.ok)throw new Error("HTTP "+r.status);return r.text()}).catch(e=>{clearTimeout(t);throw e});
+}
+async function loadSource(key,url,timeoutMs,retries,optional=false){
+  setSourceStatus(key,"Loading");
+  for(let attempt=0;attempt<=retries;attempt++){
+    try{
+      const text=await timeoutFetch(url,timeoutMs);
+      const start=String(text||"").trim().slice(0,80).toLowerCase();
+      if(!text||!text.trim())throw new Error("CSV returned empty response.");
+      if(start.startsWith("<!doctype")||start.startsWith("<html"))throw new Error("CSV URL returned HTML, not CSV.");
+      state.raw[key]=text;
+      const parsed=parseAndMap(key,text);
+      state.data[key]=parsed.rows;
+      setSourceStatus(key, parsed.rows.length===0?"0 Rows":(parsed.usedAlias?"Using Alias":"Loaded"));
+      return parsed.rows;
+    }catch(e){
+      if(attempt===retries){
+        const st=e.name==="AbortError"?"Timeout":(optional?"Optional Missing":"Failed");
+        setSourceStatus(key,st);
+        addHealth(optional?"Info":"Critical",key,e.name==="AbortError"?"FETCH-TIMEOUT":"FETCH-FAIL",String(e.message||e),url,optional?"Optional source can be left blank or republished.":"Check public CSV URL and sharing setting.");
+        return [];
+      }
+    }
+  }
+}
+
+async function loadLearningSource(){
+  const key="learning";
+  setSourceStatus(key,"Loading");
+  try{
+    const text=await timeoutFetch(CONFIG.urls.learning,6000);
+    const start=String(text||"").trim().slice(0,80).toLowerCase();
+    if(!text||!text.trim())throw new Error("CSV returned empty response.");
+    if(start.startsWith("<!doctype")||start.startsWith("<html"))throw new Error("CSV URL returned HTML, not CSV.");
+    state.raw.learning=text;
+    state.data.learning=parseLearningCsv(text);
+    setSourceStatus(key,state.data.learning.length?"Loaded":"0 Rows");
+    return state.data.learning;
+  }catch(e){
+    setSourceStatus(key,"Optional Missing");
+    addHealth("Info","learning",e.name==="AbortError"?"FETCH-TIMEOUT":"FETCH-FAIL",String(e.message||e),CONFIG.urls.learning,"Learning Intelligence can be unavailable without breaking Control Tower.");
+    state.data.learning=[];
+    return [];
+  }
+}
+function parseLearningCsv(text){
+  const matrix=parseCsv(text);
+  if(!matrix.length)return [];
+  const headerRow=0;
+  const headers=matrix[headerRow].map(h=>clean(h));
+  const find=(names)=>{for(const n of names){const i=headers.indexOf(clean(n)); if(i!==-1)return i;} return -1;};
+  const idx={
+    active:find(["Active"]),
+    month:find(["Month"]),
+    brand:find(["Brand"]),
+    topic:find(["Campaign_Topic","Campaign Topic"]),
+    prefix:find(["Campaign_Prefix","Campaign Prefix"]),
+    platform:find(["Platform"]),
+    metric:find(["KPI_Metric","KPI Metric"]),
+    issue:find(["Issue_Raised","Issue Raised"]),
+    action:find(["Action_Taken","Action Taken"]),
+    learning:find(["Result_Learning","Result Learning"]),
+    watchout:find(["Next_Watchout","Next Watchout"]),
+    insight:find(["Reusable_Insight","Reusable Insight"]),
+    sourceNote:find(["Source_Note","Source Note"]),
+    status:find(["Status"]),
+    lastUpdated:find(["Last_Updated","Last Updated"]),
+    internalNote:find(["Internal_Note","Internal Note"]),
+    md:find(["MD_Line","MD Line"])
+  };
+  const val=(row,i)=>i>=0?String(row[i]??"").trim():"";
+  const rows=[];
+  for(let r=1;r<matrix.length;r++){
+    const row=matrix[r];
+    if(!row || !row.some(c=>String(c).trim()!==""))continue;
+    const o={
+      activeFlag:val(row,idx.active),
+      learningMonth:val(row,idx.month),
+      brand:val(row,idx.brand),
+      topic:val(row,idx.topic),
+      prefix:val(row,idx.prefix),
+      learningPlatform:val(row,idx.platform)||"N/A",
+      learningMetric:val(row,idx.metric)||"N/A",
+      issue:val(row,idx.issue),
+      action:val(row,idx.action),
+      learning:val(row,idx.learning),
+      watchout:val(row,idx.watchout),
+      insight:val(row,idx.insight),
+      sourceNote:val(row,idx.sourceNote),
+      statusText:val(row,idx.status)||"Active",
+      lastUpdated:val(row,idx.lastUpdated),
+      internalNote:val(row,idx.internalNote),
+      md:val(row,idx.md)
+    };
+    rows.push(o);
+  }
+  return rows;
+}
+
+
+
+function saveUiState(){
+  try{
+    localStorage.setItem(STATE_KEY,JSON.stringify({
+      currentPage: state.ui?.currentPage || "control",
+      selectedCode: state.ui?.selectedCode || state.selected?.code || $("deepCampaignSelect")?.value || "",
+      selectedScope: state.scope || null,
+      deepMonth: $("deepMonth")?.value || state.ui?.deepMonth || "ALL",
+      deepPlatform: $("deepPlatform")?.value || state.ui?.deepPlatform || "ALL",
+      deepSearch: $("deepCampaignSearch")?.value || state.ui?.deepSearch || ""
+    }));
+  }catch(e){}
+}
+function loadUiState(){
+  try{return JSON.parse(localStorage.getItem(STATE_KEY)||"{}");}catch(e){return {};}
+}
+
+function captureUiState(){
+  const stored=loadUiState();
+  return {
+    currentPage: document.querySelector(".page.active")?.id?.replace("page-","") || state.ui?.currentPage || stored.currentPage || "control",
+    selectedCode: state.selected?.code || state.ui?.selectedCode || $("deepCampaignSelect")?.value || stored.selectedCode || "",
+    selectedScope: state.scope || stored.selectedScope || null,
+    deepMonth: $("deepMonth")?.value || state.ui?.deepMonth || stored.deepMonth || "ALL",
+    deepPlatform: $("deepPlatform")?.value || state.ui?.deepPlatform || stored.deepPlatform || "ALL",
+    deepSearch: $("deepCampaignSearch")?.value || state.ui?.deepSearch || stored.deepSearch || ""
+  };
+}
+
+function restoreDeepAfterOverview(preserve){
+  if(!preserve || preserve.currentPage!=="deep") return;
+  initDeepSelectors();
+  if($("deepMonth")) $("deepMonth").value=preserve.deepMonth || "ALL";
+  if($("deepPlatform")) $("deepPlatform").value=preserve.deepPlatform || "ALL";
+  if($("deepCampaignSearch")) $("deepCampaignSearch").value=preserve.deepSearch || "";
+  updateDeepCampaignOptions(true);
+  const code=preserve.selectedCode;
+  if(code){
+    const c=preserve.selectedScope ? findOverviewRowForScope(preserve.selectedScope) : state.data.overview.find(x=>x.code===code);
+    if(c){
+      state.selected=c;
+      state.ui.selectedCode=code;
+      if($("deepCampaignSelect")) $("deepCampaignSelect").value=getCampaignScopeKey(buildScopeFromRow(c,"campaign"));
+      openDeep(c,preserve.selectedScope || buildScopeFromRow(c,"campaign"));
+      showRestoreNote(`Restored selected campaign ${code}. Daily/Target data may continue syncing.`);
+    }else{
+      showPage("deep"); clearDeepContent();
+      showRestoreNote(`Selected campaign ${code} is not available after refresh.`);
+    }
+  }else{showPage("deep"); clearDeepContent();}
+}
+
+function restoreUiState(preserve){
+  if(!preserve) return;
+  state.ui={...state.ui,...preserve};
+  initDeepSelectors();
+  if($("deepMonth")) $("deepMonth").value=preserve.deepMonth || "ALL";
+  if($("deepPlatform")) $("deepPlatform").value=preserve.deepPlatform || "ALL";
+  if($("deepCampaignSearch")) $("deepCampaignSearch").value=preserve.deepSearch || "";
+  updateDeepCampaignOptions(true);
+  const code=preserve.selectedCode;
+  if(code){
+    const c=preserve.selectedScope ? findOverviewRowForScope(preserve.selectedScope) : state.data.overview.find(x=>x.code===code);
+    if(c){
+      state.selected=c;
+      if($("deepCampaignSelect")) $("deepCampaignSelect").value=getCampaignScopeKey(buildScopeFromRow(c,"campaign"));
+      if(preserve.currentPage==="deep") showRestoreNote(`Restored selected campaign ${code} after refresh.`);
+      openDeep(c,preserve.selectedScope || buildScopeFromRow(c,"campaign"));
+    }else if(preserve.currentPage==="deep"){
+      showPage("deep");
+      showRestoreNote(`Selected campaign ${code} is no longer available after refresh.`);
+      clearDeepContent();
+    }
+  }else if(preserve.currentPage==="deep"){
+    showPage("deep");
+    clearDeepContent();
+  }else{
+    showPage(preserve.currentPage || "control");
+  }
+}
+function showRestoreNote(text){
+  const el=$("deepRestoreNote");
+  if(!el) return;
+  el.textContent=text;
+  el.classList.remove("hidden");
+  setTimeout(()=>el.classList.add("hidden"),3500);
+}
+function clearDeepContent(){
+  state.selected=null;
+  if($("deepCampaignSelect")) $("deepCampaignSelect").value="";
+  $("deepWrap")?.classList.add("hidden");
+  $("deepEmpty")?.classList.remove("hidden");
+}
+function initDeepSelectors(){
+  if(!$("deepMonth")) return;
+  const months=new Set();
+  state.data.overview.forEach(o=>monthKeysBetween(o.startDate,o.endDate).forEach(m=>months.add(m)));
+  const monthItems=["ALL",...[...months].sort().reverse()];
+  const prevMonth=$("deepMonth").value || state.ui?.deepMonth || "ALL";
+  $("deepMonth").innerHTML=monthItems.map(m=>`<option value="${escapeAttr(m)}" ${m===prevMonth?"selected":""}>${m==="ALL"?"All Months":monthName(m)}</option>`).join("");
+
+  const platforms=["ALL",...[...new Set(state.data.overview.map(o=>o.platform).filter(Boolean))].sort()];
+  const prevPlatform=$("deepPlatform").value || state.ui?.deepPlatform || "ALL";
+  $("deepPlatform").innerHTML=platforms.map(p=>`<option value="${escapeAttr(p)}" ${p===prevPlatform?"selected":""}>${p==="ALL"?"All Platforms":escapeHtml(p)}</option>`).join("");
+
+  updateDeepCampaignOptions(true);
+}
+function getCampaignScopeKey(row){return [row.code,row.platform,row.objective,row.name||row.campaignName].map(scopeText).join("|")}
+function findOverviewRowForScope(scope){
+  return state.data.overview.find(row=>
+    scopeText(row.code)===scopeText(scope.code) &&
+    scopeText(row.platform)===scopeText(scope.platform) &&
+    scopeText(row.objective)===scopeText(scope.objective) &&
+    scopeText(row.name||row.campaignName)===scopeText(scope.campaignName) &&
+    (!scope.focusAdSet || adSetScopeMatches(row.focusAdSet||row.targetName,scope.focusAdSet))
+  ) || state.data.overview.find(row=>scopeText(row.code)===scopeText(scope.code));
+}
+function updateDeepCampaignOptions(keepSelected){
+  if(!$("deepCampaignSelect")) return;
+  const selectedBefore = keepSelected ? ($("deepCampaignSelect").value || (state.scope ? getCampaignScopeKey(state.scope) : "") || state.ui?.selectedCode || "") : "";
+  const m=$("deepMonth").value || "ALL";
+  const p=$("deepPlatform").value || "ALL";
+  const q=($("deepCampaignSearch").value || "").toLowerCase().trim();
+
+  state.ui.deepMonth=m;
+  state.ui.deepPlatform=p;
+  state.ui.deepSearch=$("deepCampaignSearch").value || "";
+
+  let rows=state.data.overview.filter(o=>!o._setupMissingCode);
+  if(m!=="ALL") rows=rows.filter(o=>monthOverlap(o,m));
+  if(p!=="ALL") rows=rows.filter(o=>o.platform===p);
+  if(q) rows=rows.filter(o=>`${o.code} ${o.name} ${o.platform} ${o.objective}`.toLowerCase().includes(q));
+  const campaigns=[...new Map(rows.map(row=>[getCampaignScopeKey(row),row])).entries()]
+    .map(([key,row])=>({key,row}))
+    .sort((a,b)=>`${a.row.code} ${a.row.name}`.localeCompare(`${b.row.code} ${b.row.name}`));
+
+  $("deepCampaignSelect").innerHTML=`<option value="">Select Campaign</option>`+campaigns.map(({key,row})=>`<option value="${escapeAttr(key)}">${escapeHtml(row.code)} | ${escapeHtml(row.platform||"")} | ${escapeHtml(row.name||"Unnamed")}</option>`).join("");
+
+  if(selectedBefore && campaigns.some(item=>item.key===selectedBefore)){
+    $("deepCampaignSelect").value=selectedBefore;
+  }else if(!keepSelected && campaigns.length===1){
+    $("deepCampaignSelect").value=campaigns[0].key;
+    selectDeepCampaignFromDropdown();
+  }
+}
+function selectDeepCampaignFromDropdown(){
+  const key=$("deepCampaignSelect")?.value;
+  if(!key){
+    clearDeepContent();
+    return;
+  }
+  const c=state.data.overview.find(x=>getCampaignScopeKey(x)===key);
+  if(c){
+    state.ui.selectedCode=c.code;
+    saveUiState();
+    openDeep(c,buildScopeFromRow(c,"campaign"));
+  }
+}
+function resetDeepSelection(){
+  if($("deepMonth")) $("deepMonth").value="ALL";
+  if($("deepPlatform")) $("deepPlatform").value="ALL";
+  if($("deepCampaignSearch")) $("deepCampaignSearch").value="";
+  state.ui.selectedCode="";
+  saveUiState();
+  updateDeepCampaignOptions(false);
+  clearDeepContent();
+}
+
+async function refreshData(){
+  const preserve = captureUiState();
+  state.health=[];state.stats={missingCode:0};state.data={overview:[],daily:[],target:[],learning:[]};state.selected=null;state.chip="ALL";
+  $("deepWrap").classList.add("hidden");$("deepEmpty").classList.remove("hidden");$("warningArea").innerHTML="";
+  $("loadingOverlay").style.opacity="1";$("loadingOverlay").style.pointerEvents="all";$("loadingText").textContent="Loading Campaign_Overview...";
+  setSourceStatus("overview","Loading");setSourceStatus("daily","Loading");setSourceStatus("target","Loading");
+  const op=loadSource("overview",CONFIG.urls.overview,8000,1,false);
+  const dp=loadSource("daily",CONFIG.urls.daily,8000,1,false);
+  const tp=loadSource("target",CONFIG.urls.target,6000,0,true);
+  const lp=loadLearningSource();
+  const overviewRows=await op;
+  if(overviewRows.length>0){
+    $("loadingOverlay").style.opacity="0";$("loadingOverlay").style.pointerEvents="none";
+    initFilters();renderControl();initDeepSelectors();restoreDeepAfterOverview(preserve);
+  }else{
+    $("loadingText").textContent="Campaign_Overview failed. Check source URL.";
+    $("warningArea").innerHTML=`<div class="warnBanner">Campaign_Overview failed. Control Tower cannot render. Please check the CSV source.</div>`;
+  }
+  Promise.allSettled([dp,tp,lp]).then(()=>{initFilters();renderControl();initLearningFilters();renderLearning();renderPlatformFreshness();if(state.selected)openDeep(state.selected,state.scope||buildScopeFromRow(state.selected,"campaign"))});
+}
+function parseCsv(text){
+  const rows=[];let row=[""],inQ=false;
+  for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(c==='"'){if(inQ&&n==='"'){row[row.length-1]+='"';i++}else inQ=!inQ}else if(c===','&&!inQ){row.push("")}else if((c==="\n"||c==="\r")&&!inQ){if(c==="\r"&&n==="\n")i++;rows.push(row);row=[""]}else row[row.length-1]+=c}
+  if(row.length>1||row[0]!=="")rows.push(row);
+  return rows.filter(r=>r.some(v=>String(v).trim()!==""));
+}
+function parseAndMap(key,text){
+  const matrix=parseCsv(text); if(!matrix.length)return {rows:[],usedAlias:false};
+  const h=detectHeader(matrix); if(h.row>0)addHealth("Warning",key,"HEADER-SHIFT","Header row was not row 1.","Detected row "+(h.row+1),"Remove metadata rows or keep auto header detection enabled.");
+  const headers=matrix[h.row].map(x=>clean(x)), idx={}; let usedAlias=false;
+  Object.keys(ALIASES).forEach(k=>{idx[k]=findIndex(headers,ALIASES[k]); if(idx[k]!==-1&&headers[idx[k]]!==clean(ALIASES[k][0]))usedAlias=true});
+  requiredFor(key).forEach(k=>{if(idx[k]===-1)addHealth(key==="overview"?"Critical":"Warning",key,"MISSING-COL","Required column missing: "+k,"Header row "+(h.row+1),"Add canonical column or accepted alias.")});
+  const rows=[]; let missingCode=0;
+  for(let r=h.row+1;r<matrix.length;r++){
+    const cells=matrix[r]; if(!cells||!cells.some(c=>String(c).trim()!==""))continue;
+    const obj={_row:r+1,_alias:usedAlias};
+    Object.keys(idx).forEach(k=>obj[k]=idx[k]===-1?"":String(cells[idx[k]]??"").trim());
+    if(key==="overview"){
+      // CJ source has two adjacent columns named KPI Result: numeric value + result label (e.g. Impression / View 6s).
+      obj.resultLabel = getDuplicateHeaderValue(headers,cells,"KPI Result",2) || String(cells[16]??"").trim();
+    }
+    if(!obj.code){
+      if(key==="overview"){
+        missingCode++;
+        obj.code = "SETUP-" + String(r+1).padStart(3,"0");
+        obj._setupMissingCode = true;
+      } else {
+        continue;
+      }
+    }
+    normalizeRecord(key,obj); rows.push(obj);
+  }
+  if(key==="overview")state.stats.missingCode=missingCode;
+  return {rows,usedAlias};
+}
+function clean(v){return String(v||"").trim().toLowerCase().replace(/\s+/g," ")}
+function findIndex(headers,aliases){for(const a of aliases){const i=headers.indexOf(clean(a)); if(i!==-1)return i} return -1}
+function detectHeader(matrix){let best=0,score=-1;for(let r=0;r<Math.min(10,matrix.length);r++){const hs=matrix[r].map(x=>clean(x));let s=0;Object.values(ALIASES).flat().forEach(a=>{if(hs.includes(clean(a)))s++});if(s>score){score=s;best=r}}return {row:best,score}}
+function requiredFor(key){if(key==="overview")return["code","platform","name","start","end","budget","spend"];if(key==="daily")return["code","date","dailySpend"];if(key==="target")return["code"];return[]}
+function normalizeRecord(key,o){
+  if(key==="overview"){
+    o.startDate=parseDateBySource(o.start,'overview');o.endDate=parseDateBySource(o.end,'overview');o.budgetNum=num(o.budget);o.spendNum=num(o.spend);o.resultNum=num(o.result);o.kpiNum=num(o.kpi);
+    o.cprNum=deriveCostPerResult(o.spendNum,o.resultNum,o.metric,num(o.cpr));
+    o.kpiCprNum=deriveKpiCostPerResult(o.budgetNum,o.kpiNum,o.metric);
+    o.budgetPct=o.budgetNum>0?o.spendNum/o.budgetNum*100:null;o.kpiPct=o.kpiNum>0?o.resultNum/o.kpiNum*100:null;o.status=calcStatus(o);
+    const forecastRaw=String(o.forecast??"").trim();
+    const forecastValue=num(forecastRaw);
+    o.forecastPct=forecastRaw===""?null:(Math.abs(forecastValue)<=1?forecastValue*100:forecastValue);
+    o.daysLeft = o.endDate ? Math.ceil((o.endDate - d1())/86400000) : null;
+    o.daysRunning = o.startDate ? Math.max(0, Math.ceil((d1() - o.startDate)/86400000)+1) : null;
+  }
+  else{o.dateObj=parseDateBySource(o.date,key);o.spendNum=num(o.dailySpend||o.spend);o.resultNum=num(o.dailyResult||o.result);o.cprNum=deriveCostPerResult(o.spendNum,o.resultNum,o.metric,num(o.cpr))}
+}
+function deriveCostPerResult(spend,result,metric,sourceVal){
+  if(sourceVal && sourceVal>0) return sourceVal;
+  if(!result || result<=0) return null;
+  const m=String(metric||"").toLowerCase();
+  if(m==="cpm" || m.includes("impression")) return spend/result*1000;
+  return spend/result;
+}
+function deriveKpiCostPerResult(budget,kpiResult,metric){
+  if(!budget || budget<=0 || !kpiResult || kpiResult<=0) return null;
+  const m=String(metric||"").toLowerCase();
+  if(m==="cpm" || m.includes("impression")) return budget/kpiResult*1000;
+  return budget/kpiResult;
+}
+function cprVsPlanLabel(actual,plan){
+  if(actual===null || actual===undefined || isNaN(actual) || !plan || plan<=0) return "";
+  const diff=(actual-plan)/plan*100;
+  if(Math.abs(diff)<0.5) return " · on plan";
+  return ` · ${diff<0?"better":"higher"} ${fmt(Math.abs(diff),1)}% vs plan`;
+}
+function parseDateGeneral(v){
+  if(!v)return null;
+  const s=String(v).trim();
+  if(/^\d{5}(\.\d+)?$/.test(s)){
+    const serial=parseFloat(s);
+    if(serial>30000&&serial<70000){
+      const d=new Date(Math.round((serial-25569)*86400*1000));
+      return new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate());
+    }
+  }
+  let m=s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
+  if(m)return new Date(+m[1],+m[2]-1,+m[3]);
+  const d=new Date(s);
+  return isNaN(d)?null:new Date(d.getFullYear(),d.getMonth(),d.getDate());
+}
+function parseDateBySource(v,sourceKey){
+  if(!v)return null;
+  const s=String(v).trim();
+
+  if(/^\d{5}(\.\d+)?$/.test(s)){
+    const serial=parseFloat(s);
+    if(serial>30000&&serial<70000){
+      const d=new Date(Math.round((serial-25569)*86400*1000));
+      return new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate());
+    }
+  }
+
+  let m=s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
+  if(m)return new Date(+m[1],+m[2]-1,+m[3]);
+
+  m=s.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/);
+  if(m){
+    const a=+m[1], b=+m[2], y=+m[3];
+
+    if(sourceKey==="overview"){
+      return new Date(y,b-1,a); // Campaign_Overview = DD/MM/YYYY
+    }
+
+    if(sourceKey==="daily" || sourceKey==="target"){
+      return new Date(y,a-1,b); // Daily/Target = MM/DD/YYYY
+    }
+
+    if(a>12)return new Date(y,b-1,a);
+    if(b>12)return new Date(y,a-1,b);
+    return new Date(y,b-1,a);
+  }
+
+  return parseDateGeneral(s);
+}
+function num(v){if(v===null||v===undefined||v==="")return 0;const n=parseFloat(String(v).replace(/[^0-9.-]/g,""));return isNaN(n)?0:n}
+function fmtDate(d){return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`:"N/A"}
+function fmt(n,d=0){return(isNaN(n)||n===null?0:n).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d})}
+function money(n,d=0){return n===null||isNaN(n)?"N/A":"฿"+fmt(n,d)}
+function cprFmt(o){return o.cprNum===null||isNaN(o.cprNum)?"N/A":`${money(o.cprNum,2)} / ${escapeHtml(o.metric||"Result")}`}
+function kpiResultFmt(o){
+  const label = o.resultLabel || o.kpiResultLabel || "";
+  return `<b>${fmt(o.resultNum,0)}</b>${label?` <span class="smallNote">${escapeHtml(label)}</span>`:""}`;
+}
+function getDuplicateHeaderValue(headers,cells,headerName,occurrence){
+  const target=clean(headerName);
+  let seen=0;
+  for(let i=0;i<headers.length;i++){
+    if(headers[i]===target){
+      seen++;
+      if(seen===occurrence) return String(cells[i]??"").trim();
+    }
+  }
+  return "";
+}
+function ym(d){return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`:currentMonthKey()}
+
+function resolvedD1Date(){
+  if(CONFIG.d1Date && CONFIG.d1Date!=="AUTO") return parseDateGeneral(CONFIG.d1Date);
+  const now=new Date();
+  return new Date(now.getFullYear(),now.getMonth(),now.getDate()-1);
+}
+function d1Label(){return fmtDate(resolvedD1Date());}
+function platformDisplayName(p){
+  const s=String(p||"Other").toLowerCase();
+  if(s.includes("facebook") || s.includes("meta")) return "Meta";
+  if(s.includes("tiktok")) return "TikTok";
+  if(s.includes("line")) return "LINE";
+  if(s.includes("google")) return "Google";
+  if(s.includes("youtube")) return "YouTube";
+  return p||"Other";
+}
+function platformBadge(platform){
+  const label=platformDisplayName(platform);
+  const cls="p-"+String(label).toLowerCase().replace(/[^a-z0-9]/g,"");
+  return `<span class="badge platform ${cls}">${escapeHtml(label)}</span>`;
+}
+function shortDateLabel(d){
+  if(!d) return "N/A";
+  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return `${months[d.getMonth()]} ${d.getDate()}`;
+}
+function renderPlatformFreshness(){
+  const el=$("platformFreshness"); if(!el) return;
+  const byPlatform={};
+  (state.data.daily||[]).forEach(r=>{
+    if(!r.dateObj || !r.platform) return;
+    const p=platformDisplayName(r.platform);
+    if(!byPlatform[p] || r.dateObj>byPlatform[p]) byPlatform[p]=r.dateObj;
+  });
+  if(!sourceReady("daily")){
+    el.innerHTML=`<span class="freshPill">Data through: <b>Daily syncing...</b></span>`;
+    return;
+  }
+  const items=Object.entries(byPlatform).sort((a,b)=>a[0].localeCompare(b[0]));
+  if(!items.length){
+    el.innerHTML=`<span class="freshPill">Data through: <b>No daily date found</b></span>`;
+    return;
+  }
+  el.innerHTML=`<span>Data through</span>`+items.map(([p,d])=>`<span class="freshPill">${escapeHtml(p)}: <b>${shortDateLabel(d)}</b></span>`).join("");
+}
+
+function d1(){return resolvedD1Date()||new Date()}
+function calcStatus(o){if(o._setupMissingCode)return"Setup Only";if(!o.code||!o.startDate||!o.endDate||o.endDate<o.startDate||isNaN(o.budgetNum)||isNaN(o.spendNum))return"Data Invalid";const today=d1();if(o.spendNum>o.budgetNum&&o.budgetNum>0)return"Overspend";if(today>=o.startDate&&today<=o.endDate&&o.spendNum===0)return"No Spend";if(today>=o.startDate&&today<=o.endDate&&o.spendNum>0)return"Active";if(today<o.startDate&&o.spendNum===0)return"Setup Only";if(today<o.startDate)return"Future";if(today>o.endDate)return"Ended";return"Unknown"}
+function monthKeysBetween(start,end){
+  const keys=[]; if(!start||!end)return keys;
+  let d=new Date(start.getFullYear(),start.getMonth(),1); const stop=new Date(end.getFullYear(),end.getMonth(),1);
+  while(d<=stop){keys.push(ym(d)); d=new Date(d.getFullYear(),d.getMonth()+1,1)}
+  return keys;
+}
+
+
+function currentMonthKey(){
+  const d=resolvedD1Date ? resolvedD1Date() : new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+}
+function effectiveDefaultMonth(monthSet){
+  if(CONFIG.defaultMonth && CONFIG.defaultMonth!=="AUTO") return CONFIG.defaultMonth;
+  const current=currentMonthKey();
+  if(monthSet && monthSet.has && monthSet.has(current)) return current;
+  if(monthSet && monthSet.size) return [...monthSet].sort().reverse()[0];
+  return current;
+}
+
+function monthName(m){
+  const names=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const parts=String(m||"").split("-");
+  const idx=parseInt(parts[1],10)-1;
+  return names[idx] || m;
+}
+function getFocusAdSetsForCampaign(o){
+  const found = [];
+  if(o.focusAdSet && String(o.focusAdSet).trim()) found.push(String(o.focusAdSet).trim());
+  if(o.code && !o._setupMissingCode){
+    state.data.target.forEach(r=>{
+      if(r.code===o.code && r.targetName && String(r.targetName).trim()) found.push(String(r.targetName).trim());
+      if(r.code===o.code && r.focusAdSet && String(r.focusAdSet).trim()) found.push(String(r.focusAdSet).trim());
+    });
+  }
+  const unique = [...new Set(found.filter(Boolean))];
+  if(unique.length===0) return "";
+  if(unique.length===1) return unique[0];
+  return unique[0] + " +" + (unique.length-1) + " more";
+}
+function renderCampaignName(o){
+  const focus = getFocusAdSetsForCampaign(o);
+  const main = escapeHtml(o.name||"Unnamed");
+  if(!focus) return `<span class="campaignTitleMain" title="${escapeAttr(o.name||"Unnamed")}">${main}</span>`;
+  return `<span class="campaignTitleMain" title="${escapeAttr(o.name||"Unnamed")}">${main}</span><span class="campaignTitleSub" title="${escapeAttr(focus)}">(${escapeHtml(focus)})</span>`;
+}
+
+function initFilters(){
+  const months=new Set();state.data.overview.forEach(o=>monthKeysBetween(o.startDate,o.endDate).forEach(m=>months.add(m)));if(!months.size)months.add(CONFIG.defaultMonth);
+  const prev=$("monthFilter").value;
+  const monthOptions=[...months].sort().reverse().map(m=>`<option class="monthLabel" value="${m}" ${(prev&&prev!=="ALL"?m===prev:(!prev&&m===effectiveDefaultMonth(months)))?"selected":""}>${monthName(m)}</option>`).join("");
+  $("monthFilter").innerHTML=`<option class="monthLabel" value="ALL" ${prev==="ALL"?"selected":""}>All Months</option>`+monthOptions;
+  const prevPlatform=$("platformFilter")?.value || "ALL";
+  const plats=new Set(state.data.overview.map(o=>o.platform).filter(Boolean));
+  $("platformFilter").innerHTML='<option value="ALL">All Platforms</option>'+[...plats].sort().map(p=>`<option value="${escapeAttr(p)}" ${p===prevPlatform?"selected":""}>${escapeHtml(p)}</option>`).join("");
+  const prevObjective=$("objectiveFilter")?.value || "ALL";
+  const objectives=new Set(state.data.overview.map(o=>o.objective).filter(Boolean));
+  if($("objectiveFilter")){
+    $("objectiveFilter").innerHTML='<option value="ALL">All Objectives</option>'+[...objectives].sort().map(obj=>`<option value="${escapeAttr(obj)}" ${obj===prevObjective?"selected":""}>${escapeHtml(obj)}</option>`).join("");
+  }
+  const statuses=new Set(state.data.overview.map(o=>o.status).filter(Boolean));$("statusFilter").innerHTML='<option value="ALL">All Statuses</option>'+[...statuses].sort((a,b)=>statusRank(a)-statusRank(b)).map(s=>`<option value="${escapeAttr(s)}">${escapeHtml(s)}</option>`).join("");
+  $("freshness").textContent=`Last loaded: ${new Date().toLocaleString()} | D-1: ${d1Label()}`;
+  renderChips();
+}
+function monthOverlap(o,m){if(!o.startDate||!o.endDate)return false;return monthKeysBetween(o.startDate,o.endDate).includes(m)}
+function monthRange(m){
+  if(!m || m==="ALL") return null;
+  const [year,month]=String(m).split("-").map(Number);
+  return year&&month?{start:new Date(year,month-1,1),end:new Date(year,month,0)}:null;
+}
+function dateInMonthKey(date,m){
+  if(!date || !m || m==="ALL") return !!date;
+  const range=monthRange(m);
+  return !range || (date>=range.start && date<=range.end);
+}
+function dailyPlatformSpendForRows(rows){
+  const out={Meta:0,TikTok:0};
+  if(!rows?.length) return {spend:out,matched:0};
+  const selectedMonth=$("monthFilter")?.value||CONFIG.defaultMonth;
+  const codes=new Set(rows.map(r=>r.code).filter(c=>c && !String(c).startsWith("SETUP-")));
+  const overviewByCode={};
+  state.data.overview.forEach(o=>{if(o.code)overviewByCode[o.code]=o});
+  let matched=0;
+  state.data.daily.forEach(r=>{
+    if(!codes.has(r.code) || !dateInMonthKey(r.dateObj,selectedMonth)) return;
+    const platform=platformDisplayName(r.platform || overviewByCode[r.code]?.platform);
+    if(out[platform]===undefined) return;
+    out[platform]+=r.spendNum||0;
+    matched++;
+  });
+  return {spend:out,matched};
+}
+function renderControl(){
+  const m=$("monthFilter").value||CONFIG.defaultMonth,
+        p=$("platformFilter").value,
+        obj=$("objectiveFilter")?.value || "ALL",
+        s=$("statusFilter").value,
+        q=$("searchBox").value.toLowerCase().trim();
+  let rows=m==="ALL"?[...state.data.overview]:state.data.overview.filter(o=>monthOverlap(o,m));
+  if(p&&p!=="ALL")rows=rows.filter(o=>o.platform===p);
+  if(obj&&obj!=="ALL")rows=rows.filter(o=>o.objective===obj);
+  if(s&&s!=="ALL")rows=rows.filter(o=>o.status===s);
+  if(state.chip==="Active") rows=rows.filter(o=>o.status==="Active");
+  if(state.chip==="End") rows=rows.filter(o=>o.status==="Ended");
+  if(q)rows=rows.filter(o=>(`${o.code} ${o.name} ${o.objective} ${o.platform}`).toLowerCase().includes(q));
+  rows.sort((a,b)=>compare(a,b,state.sort.key)*state.sort.dir);state.filtered=rows;renderKpis(rows);renderBigPicture(rows);renderForecastWatchlist(rows);renderTable(rows);renderIssueSummary(rows);renderPlatformFreshness();renderChips();
+}
+function statusRank(s){return{"Active":1,"No Spend":2,"Overspend":3,"Spend After End Date":4,"Data Invalid":5,"Setup Only":6,"Future":7,"Ended":8,"Unknown":9}[s]||99}
+function compare(a,b,k){if(k==="status")return statusRank(a.status)-statusRank(b.status);if(k==="cpr")return (a.cprNum||0)-(b.cprNum||0);const va=a[k],vb=b[k];if(["budget","spend","result","weightScore"].includes(k))return num(va)-num(vb);if(k==="startDate"||k==="endDate")return((a[k]?.getTime?.()||0)-(b[k]?.getTime?.()||0));return String(va||"").localeCompare(String(vb||""))}
+function sortBy(k){if(state.sort.key===k)state.sort.dir*=-1;else{state.sort.key=k;state.sort.dir=1}renderControl()}
+function renderIssueSummary(rows){
+  const missTD=rows.filter(x=>!x.td).length;
+  const setup=rows.filter(x=>x.status==="Setup Only" || x._setupMissingCode || !x.td).length;
+  const active=rows.filter(x=>x.status==="Active").length;
+  const ended=rows.filter(x=>x.status==="Ended").length;
+  $("issueSummary").innerHTML=`Setup: <b>${setup}</b> · Missing Campaign Code: <b>${state.stats.missingCode||0}</b> · Missing TD: <b>${missTD}</b> · Active: <b>${active}</b> · End: <b>${ended}</b>`;
+  $("warningArea").innerHTML = "";
+}
+function renderChips(){
+  const all = ["ALL","Active","End"];
+  const counts = {
+    "ALL": state.data.overview.length,
+    "Active": state.data.overview.filter(x=>x.status==="Active").length,
+    "End": state.data.overview.filter(x=>x.status==="Ended").length
+  };
+  $("statusChips").innerHTML=all.map(c=>`<button class="chip ${state.chip===c?"active":""}" onclick="setChip('${c}')">${c} · ${counts[c]||0}</button>`).join("");
+}
+function setChip(c){state.chip=c;renderControl()}
+
+function renderBigPicture(rows){
+  const active=rows.filter(x=>x.status==="Active").length;
+  const ended=rows.filter(x=>x.status==="Ended").length;
+  const setup=rows.filter(x=>x.status==="Setup Only" || x._setupMissingCode || !x.td).length;
+  const missTD=rows.filter(x=>!x.td).length;
+  const noSpend=rows.filter(x=>x.status==="No Spend").length;
+  const budget=rows.reduce((a,b)=>a+b.budgetNum,0);
+  const dailySpendResult=dailyPlatformSpendForRows(rows);
+  const byPlatform=dailySpendResult.spend;
+  const spend=Object.values(byPlatform).reduce((a,b)=>a+b,0);
+  const used=budget>0?spend/budget*100:0;
+  const remaining=Math.max(0,budget-spend);
+  const selectedMonth=$("monthFilter").value||CONFIG.defaultMonth;
+  const monthText=selectedMonth==="ALL"?"All Months":monthName(selectedMonth);
+
+  let situation = `${monthText}: ${money(spend,0)} actual spend from Daily Breakdown (${fmt(used,1)}% of ${money(budget,0)} budget). ${active} active, ${ended} ended, and ${setup} setup item(s).`;
+  let action = "No major delivery alert detected.";
+  if(rows.length===0){
+    situation = `${monthText} has no campaign rows matching the current filters.`;
+    action = "Check month, platform, status, or search filter.";
+  }else if(setup>0 || missTD>0){
+    action = `Follow up ${setup} setup item(s). ${missTD} row(s) still need TD Preview link.`;
+  }else if(used>=90 && active>0){
+    action = `Budget usage is ${fmt(used,1)}%. Check remaining budget ${money(remaining,0)} against active campaigns.`;
+  }else if(noSpend>0){
+    action = `${noSpend} active-window row(s) still have no spend. Check setup or delivery.`;
+  }
+
+  const totalSpend=Object.values(byPlatform).reduce((a,b)=>a+b,0);
+  const bars=Object.entries(byPlatform).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([p,v])=>{
+    const pct=totalSpend>0?Math.max(2,v/totalSpend*100):0;
+    return `<div class="platformSpendRow"><span>${escapeHtml(p)}</span><div class="platformSpendTrack"><div class="platformSpendFill" style="width:${pct}%"></div></div><span>${money(v,0)}</span></div>`;
+  }).join("") || `<div class="smallNote">No spend by platform available for current filter.</div>`;
+
+  $("bigPicture").innerHTML = `
+    <div>
+      <h3>Latest Movement Brief</h3>
+      <div class="bigPictureText"><b>Situation:</b> ${escapeHtml(situation)}</div>
+      <div class="bigPictureText" style="margin-top:5px"><b>Action Needed:</b> ${escapeHtml(action)}</div>
+      <div class="smallNote" style="margin-top:6px">Setup = missing campaign code, missing TD Preview link, or waiting setup.</div>
+    </div>
+    <div class="platformSpend">
+      <h3>Spend by Platform</h3>
+      ${bars}
+      <div class="smallNote" style="margin-top:6px">${sourceReady("daily")?"Daily spend by selected month":"Daily spend syncing"}</div>
+    </div>
+  `;
+}
+
+function renderForecastWatchlist(rows){
+  const el=$("forecastWatchlist"); if(!el)return;
+  const watch=rows.filter(r=>r.status==="Active" && !r._setupMissingCode && r.forecastPct!==null).sort((a,b)=>{
+    const af=a.forecastPct===null?999:a.forecastPct, bf=b.forecastPct===null?999:b.forecastPct;
+    return af!==bf?af-bf:(a.daysLeft??999)-(b.daysLeft??999);
+  }).slice(0,8);
+  if(!watch.length){
+    el.innerHTML=`<h3>Forecast Watchlist</h3><div class="forecastEmpty">No active campaign with forecast data is available under current filters.</div>`;
+    return;
+  }
+  el.innerHTML=`<h3>Forecast Watchlist</h3><div class="forecastList">${watch.map(r=>{
+    const critical=r.forecastPct<80;
+    const ok=r.forecastPct>=100;
+    const days=r.daysLeft===null?"N/A":(r.daysLeft<=0?"Ends today":`${r.daysLeft}d left`);
+    return `<div class="forecastItem ${critical?"critical":(ok?"ok":"")}" onclick="openDeepByRowKey('${escapeAttr(getOverviewRowKey(r))}')">
+      <div class="forecastTop"><span>${escapeHtml(r.code)}</span>${platformBadge(r.platform)}</div>
+      <div class="forecastName">${escapeHtml(r.name||r.objective||"Unnamed campaign")}</div>
+      <div class="smallNote">Ads Set: <b>${escapeHtml(r.focusAdSet||"Unmapped")}</b></div>
+      <div class="forecastMeta"><span class="forecastPill">KPI ${r.kpiPct===null?"N/A":fmt(r.kpiPct,1)+"%"}</span><span class="forecastPill">Forecast ${r.forecastPct===null?"N/A":fmt(r.forecastPct,1)+"%"}</span><span class="forecastPill">${escapeHtml(days)}</span></div>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+function renderKpis(rows){
+  const active=rows.filter(x=>x.status==="Active").length;
+  const ended=rows.filter(x=>x.status==="Ended").length;
+  const platformSpend=dailyPlatformSpendForRows(rows).spend;
+  const spend=Object.values(platformSpend).reduce((a,b)=>a+b,0);
+  const dailyNote=sourceReady("daily")?"Daily spend by selected month":"Daily spend syncing";
+  $("kpiGrid").innerHTML=`
+    <div class="kpi blue"><div class="label">Actual Spend</div><div class="value">${money(spend,0)}</div><div class="sub">Sum of platform daily spend</div></div>
+    <div class="kpi green"><div class="label">Campaigns</div><div class="value">${rows.length}</div><div class="sub">${active} active / ${ended} ended</div></div>
+    <div class="kpi"><div class="label">Facebook Spend</div><div class="value">${money(platformSpend.Meta,0)}</div><div class="sub">${dailyNote}</div></div>
+    <div class="kpi"><div class="label">TikTok Spend</div><div class="value">${money(platformSpend.TikTok,0)}</div><div class="sub">${dailyNote}</div></div>`;
+}
+function renderTable(rows){
+  const tb=$("campaignRows"); if(!rows.length){tb.innerHTML='<tr><td colspan="16"><div class="empty">No campaign rows match the current filters.</div></td></tr>';return}
+  tb.innerHTML=rows.map(o=>{
+    const statusClass="s-"+String(o.status).replace(/\s/g,""), pClass="p-"+(o.platform||"other").toLowerCase().replace(/[^a-z0-9]/g,"");
+    return `<tr class="${o._setupMissingCode?'setupRow':'campaignClickable'}" data-row-key="${escapeAttr(getOverviewRowKey(o))}" onclick="handleCampaignRowClick(event,this)">
+      <td class="stickyCol colStatus"><span class="badge ${statusClass}">${escapeHtml(o.status)}</span></td>
+      <td class="stickyCol colCode"><span class="link" onclick="${o._setupMissingCode?'':`openDeepByRowKey(\'${escapeAttr(getOverviewRowKey(o))}\')`}">${escapeHtml(o._setupMissingCode?'Pending Code':o.code)}</span></td>
+      <td class="stickyCol colPlatform"><span class="badge platform ${pClass}">${escapeHtml(o.platform||"N/A")}</span></td>
+      <td class="stickyCol colObjective">${escapeHtml(o.objective||"N/A")}</td>
+      <td class="stickyCol colName nameCell">${renderCampaignName(o)}</td>
+      <td class="stickyCol colWeight"><b>${escapeHtml(o.weight||"N/A")}</b></td>
+      <td class="stickyCol colBudget">${progress(o.budgetPct,"budget")}</td>
+      <td>${progress(o.kpiPct,"kpi")}</td>
+      <td>${fmtDate(o.startDate)}</td><td>${fmtDate(o.endDate)}</td>
+      <td><b>${money(o.budgetNum,0)}</b></td><td>${money(o.spendNum,0)}</td>
+      <td>${kpiResultFmt(o)}</td>
+      <td>${cprFmt(o)}</td>
+      <td>${o.td?`<a class="link" href="${escapeAttr(o.td)}" target="_blank" onclick="event.stopPropagation()">Open</a>`:`<span class="badge s-SetupOnly">Missing TD</span>`}</td>
+      <td class="nameCell" title="${escapeAttr(o.remark)}">${escapeHtml(o.remark || (!o.td ? "Missing TD Preview Link" : "-"))}</td>
+    </tr>`;
+  }).join("");
+}
+function progress(v,type){
+  if(v===null||isNaN(v))return"N/A";
+  let color;
+  if(type==="budget"){
+    color = v>100 ? "var(--budget-over,#dc2626)" : "var(--budget-normal,#00A150)";
+  }else{
+    color = v>=100 ? "var(--kpi-good,#00A150)" : (v<80 ? "var(--kpi-watch,#d97706)" : "var(--kpi-normal,#2563eb)");
+  }
+  return `<div class="progress"><div class="progressTop"><span>${fmt(v,1)}%</span></div><div class="track"><div class="fill" style="width:${Math.max(0,Math.min(100,v))}%;background:${color}"></div></div></div>`;
+}
+
+
+function handleCampaignRowClick(event,row){
+  if(!row || row.classList.contains("setupRow")) return;
+  if(event && event.target && event.target.closest && event.target.closest("a,button,select,input,textarea,.link")) return;
+  const key=row.getAttribute("data-row-key");
+  if(key) openDeepByRowKey(key);
+}
+
+function scopeText(v){return String(v??"").trim()}
+function scopeEq(a,b){return scopeText(a)===scopeText(b)}
+function getOverviewRowKey(row){return [row.code,row.platform,row.objective,row.name||row.campaignName,row.focusAdSet||row.targetName].map(scopeText).join("|")}
+function getScopeKey(scope){return [scope.level,scope.code,scope.platform,scope.objective,scope.campaignName,scope.focusAdSet,scope.adName].map(scopeText).join("|")}
+function buildScopeFromRow(row,level="adset"){
+  return {level,code:scopeText(row.code),platform:scopeText(row.platform),objective:scopeText(row.objective),campaignName:scopeText(row.name||row.campaignName),focusAdSet:scopeText(row.focusAdSet||row.targetName),adName:scopeText(row.adName||row.creativeName)};
+}
+function openDeepByRowKey(key){const row=state.data.overview.find(x=>getOverviewRowKey(x)===key);if(row)openDeepByRow(row)}
+function openDeepByRow(row){openDeep(row,buildScopeFromRow(row,"adset"))}
+function openDeepByCode(code){const c=state.data.overview.find(x=>x.code===code);if(c)openDeep(c,buildScopeFromRow(c,"campaign"))}
+function openDeepByScopeKey(key){
+  const parts=String(key||"").split("|");
+  const scope={level:parts[0],code:parts[1],platform:parts[2],objective:parts[3],campaignName:parts[4],focusAdSet:parts[5],adName:parts[6]};
+  const row=findOverviewRowForScope(scope);
+  if(row){
+    if(scope.focusAdSet) scope.focusAdSet=scopeText(row.focusAdSet||row.targetName);
+    openDeep(row,scope);
+  }
+}
+function resetScope(){if(state.scope&&state.selected)openDeep(state.selected,{...state.scope,level:"campaign",focusAdSet:"",adName:""})}
+function adSetScopeMatches(a,b){
+  if(scopeEq(a,b)) return true;
+  const tokens=value=>scopeText(value).toLowerCase().split(/[^a-z0-9]+/).filter(token=>token.length>=3);
+  const aTokens=tokens(a), bTokens=tokens(b);
+  return aTokens.length>0 && bTokens.length>0 && aTokens.some(token=>bTokens.includes(token));
+}
+function rowMatchesScope(row,scope){
+  if(!row||!scope) return false;
+  const required=[["code",scope.code],["platform",scope.platform],["objective",scope.objective]];
+  for(const [key,value] of required){if(value && scopeText(row[key]) && !scopeEq(row[key],value))return false}
+  const rowCampaign=row.name||row.campaignName;
+  if(scope.campaignName && rowCampaign && !scopeEq(rowCampaign,scope.campaignName))return false;
+  if(scope.level!=="campaign"){
+    const rowAdSet=row.focusAdSet||row.targetName;
+    if(scope.focusAdSet && rowAdSet && !adSetScopeMatches(rowAdSet,scope.focusAdSet))return false;
+  }
+  if(scope.level==="creative"){
+    const rowAd=row.adName||row.creativeName;
+    if(scope.adName && rowAd && !scopeEq(rowAd,scope.adName))return false;
+  }
+  return true;
+}
+function filterRowsByScope(rows,scope){return (rows||[]).filter(row=>rowMatchesScope(row,scope))}
+function aggregateOverviewScope(rows,fallback){
+  const base={...fallback}; if(!rows.length)return base;
+  ["budgetNum","spendNum","resultNum","kpiNum"].forEach(key=>base[key]=rows.reduce((sum,row)=>sum+(row[key]||0),0));
+  base.startDate=rows.reduce((d,row)=>!d||row.startDate<d?row.startDate:d,null);base.endDate=rows.reduce((d,row)=>!d||row.endDate>d?row.endDate:d,null);
+  base.cprNum=deriveCostPerResult(base.spendNum,base.resultNum,base.metric,0);base.kpiCprNum=deriveKpiCostPerResult(base.budgetNum,base.kpiNum,base.metric);base.budgetPct=base.budgetNum?base.spendNum/base.budgetNum*100:null;base.kpiPct=base.kpiNum?base.resultNum/base.kpiNum*100:null;
+  return base;
+}
+function aggregateDailyRows(rows){
+  const byDate={};rows.forEach(row=>{const key=fmtDate(row.dateObj);if(!byDate[key])byDate[key]={...row,spendNum:0,resultNum:0};byDate[key].spendNum+=row.spendNum||0;byDate[key].resultNum+=row.resultNum||0});
+  return Object.values(byDate).map(row=>({...row,cprNum:deriveCostPerResult(row.spendNum,row.resultNum,row.metric,0)})).sort((a,b)=>(a.dateObj?.getTime()||0)-(b.dateObj?.getTime()||0));
+}
+
+function sourceReady(key){
+  return ["Loaded","Using Alias","0 Rows"].includes(state.status[key]);
+}
+function sourceStatusReady(status){return ["Loaded","Using Alias","0 Rows"].includes(status)}
+function sourceStillLoading(key){
+  return !state.status[key] || state.status[key]==="Loading";
+}
+function splitDailyRowsByEndDateSoft(c,rawDailyRows,sourceStatus){
+  const threshold=CONFIG.spendAfterEndThreshold||50;
+  const ready=sourceStatusReady(sourceStatus||state.status.daily);
+  if(!ready){
+    return {visibleRows:rawDailyRows||[], postEndSpendRows:[], hiddenZeroRows:[], sourceReady:false};
+  }
+  const visibleRows=[];
+  const postEndSpendRows=[];
+  const hiddenZeroRows=[];
+  (rawDailyRows||[]).forEach(r=>{
+    const afterEnd = c && c.endDate && r.dateObj && r.dateObj > c.endDate;
+    if(afterEnd && (!r.spendNum || r.spendNum===0)){
+      hiddenZeroRows.push(r);
+      return;
+    }
+    if(afterEnd && r.spendNum > threshold){
+      r._postEndSpend = true;
+      postEndSpendRows.push(r);
+    }else{
+      r._postEndSpend = false;
+    }
+    visibleRows.push(r);
+  });
+  return {visibleRows,postEndSpendRows,hiddenZeroRows,sourceReady:true};
+}
+function renderPostEndSpendAlertSoft(rule){
+  const el=$("postEndAlert");
+  if(!el) return;
+  if(!rule || !rule.sourceReady || !rule.postEndSpendRows || !rule.postEndSpendRows.length){
+    el.classList.add("hidden");
+    el.innerHTML="";
+    return;
+  }
+  const total=rule.postEndSpendRows.reduce((a,b)=>a+(b.spendNum||0),0);
+  const dates=rule.postEndSpendRows.map(r=>`${fmtDate(r.dateObj)} (${money(r.spendNum,0)})`).join(", ");
+  el.classList.remove("hidden");
+  el.innerHTML=`<b>Spend After End Date Alert:</b> ${rule.postEndSpendRows.length} post-end day(s) have spend above ฿${fmt(CONFIG.spendAfterEndThreshold||50,0)}. Total post-end spend: <b>${money(total,0)}</b>. Dates: ${escapeHtml(dates)}.`;
+}
+
+
+function weightScoreColor(scoreText){
+  const s = String(scoreText || "").trim().toUpperCase();
+  const gradeMatch = s.match(/\/\s*([A-D])\b|(?:^|\s)([A-D])$/);
+  const grade = gradeMatch ? (gradeMatch[1] || gradeMatch[2]) : "";
+
+  if(grade === "A") return "var(--weight-score-good,#00A150)";
+  if(grade === "B") return "var(--weight-score-watch,#d97706)";
+  if(grade === "C" || grade === "D") return "var(--weight-score-bad,#dc2626)";
+
+  const numeric = parseFloat(s.replace(/[^0-9.]/g,""));
+  if(!isNaN(numeric)){
+    if(numeric >= 90) return "var(--weight-score-good,#00A150)";
+    if(numeric >= 70) return "var(--weight-score-watch,#d97706)";
+    return "var(--weight-score-bad,#dc2626)";
+  }
+
+  return "var(--weight-score-neutral,#64748b)";
+}
+
+function openDeep(c,requestedScope){
+  const scope=requestedScope||buildScopeFromRow(c,"campaign");
+  const overviewRows=filterRowsByScope(state.data.overview,scope);
+  c=aggregateOverviewScope(overviewRows,c);
+  const scopedTarget=filterRowsByScope(state.data.target,scope);
+  if(scope.level==="creative" && scopedTarget.length){
+    c.spendNum=scopedTarget.reduce((sum,row)=>sum+(row.spendNum||0),0);
+    c.resultNum=scopedTarget.reduce((sum,row)=>sum+(row.resultNum||0),0);
+    c.cprNum=deriveCostPerResult(c.spendNum,c.resultNum,c.metric,0);
+    // The source has no creative-level budget or KPI allocation, so do not imply one.
+    c.budgetNum=null;c.kpiNum=null;c.budgetPct=null;c.kpiPct=null;c.kpiCprNum=null;
+  }
+  state.selected=c;state.scope=scope;
+  state.ui.selectedCode=c.code;state.ui.scopeKey=getScopeKey(scope);
+  state.ui.currentPage="deep";
+  if($("deepCampaignSelect")) $("deepCampaignSelect").value=getCampaignScopeKey(scope);
+  saveUiState();
+  showPage("deep");$("deepEmpty").classList.add("hidden");$("deepWrap").classList.remove("hidden");
+  const pClass="p-"+(c.platform||"other").toLowerCase().replace(/[^a-z0-9]/g,"");
+  const scopeLabel=scope.level==="campaign"?"Campaign Total":scope.level==="adset"?`Selected Ads Set: ${scope.focusAdSet||"Unmapped"}`:`Selected Ads Set: ${scope.focusAdSet||"Unmapped"} · Selected Creative: ${scope.adName||"Unmapped"}`;
+  $("deepHero").innerHTML=`<div class="heroHead"><div><div class="smallNote">${escapeHtml(scopeLabel)}</div><h2>[${escapeHtml(c.code)}] ${escapeHtml(c.name)}</h2><div class="metaLine"><span class="badge platform ${pClass}">${escapeHtml(c.platform||"N/A")}</span><span>Objective: <b>${escapeHtml(c.objective)}</b></span><span>Metric: <b>${escapeHtml(c.metric||"N/A")}</b></span><span>CPR Type: <b>${escapeHtml(c.metric||"Result")}</b></span><span>Period: <b>${fmtDate(c.startDate)} → ${fmtDate(c.endDate)}</b></span><span>Status: <b>${escapeHtml(c.status)}</b></span></div></div><div><button class="btn" onclick="resetScope()" ${scope.level==="campaign"?"disabled":""}>View Campaign Total</button><div class="smallNote" style="margin-top:8px">Weight Score</div><div class="bigScore" style="color:${weightScoreColor(c.weight)}">${escapeHtml(c.weight||"N/A")}</div></div></div>`;
+  // Daily Breakdown is campaign-level in the current feed; Target & Creative is the
+  // row-level daily source used whenever an Ads Set or Creative is selected.
+  const deliveryRows=scope.level==="campaign" ? state.data.daily : state.data.target;
+  const deliveryStatus=scope.level==="campaign" ? state.status.daily : state.status.target;
+  const rawDaily=aggregateDailyRows(filterRowsByScope(deliveryRows,scope));
+  const dailyRule=splitDailyRowsByEndDateSoft(c,rawDaily,deliveryStatus);
+  const daily=dailyRule.visibleRows;
+  const target=scopedTarget; c._daily=daily; c._target=target; c._dailyRule=dailyRule;c._deliveryStatus=deliveryStatus;c._deliverySource=scope.level==="campaign"?"Daily Breakdown":"Target & Creative";
+  renderPostEndSpendAlertSoft(dailyRule);
+  const avgDaily=daily.length?daily.reduce((a,b)=>a+b.spendNum,0)/daily.length:0, bestDay=daily.length?[...daily].sort((a,b)=>b.resultNum-a.resultNum)[0]:null;
+  $("deepKpis").innerHTML=`
+    <div class="kpi green"><div class="label">Spend vs Budget</div><div class="value">${money(c.spendNum,0)}</div><div class="sub">Budget ${money(c.budgetNum,0)} · ${fmt(c.budgetPct||0,1)}%</div></div>
+    <div class="kpi blue"><div class="label">Result vs KPI</div><div class="value">${fmt(c.resultNum,0)}</div><div class="sub">KPI ${fmt(c.kpiNum,0)} ${escapeHtml(c.kpiResult||"Result")} · ${c.kpiPct===null?"N/A":fmt(c.kpiPct,1)+"%"}</div></div>
+    <div class="kpi amber"><div class="label">CPR / Metric</div><div class="value">${c.cprNum===null?"N/A":money(c.cprNum,2)}</div><div class="sub">Actual per ${escapeHtml(c.metric||"result")} · KPI Cost ${c.kpiCprNum===null?"N/A":money(c.kpiCprNum,2)}${cprVsPlanLabel(c.cprNum,c.kpiCprNum)}</div></div>
+    <div class="kpi purple"><div class="label">Best Day</div><div class="value">${bestDay?fmtDate(bestDay.dateObj):"N/A"}</div><div class="sub">${bestDay?fmt(bestDay.resultNum,0)+" "+escapeHtml(c.kpiResult||c.kpiResultText||c.resultType||c.actualResultType||"Result"):"No daily data"}</div></div>
+    <div class="kpi"><div class="label">Avg Daily Spend</div><div class="value">${money(avgDaily,0)}</div><div class="sub">Based on ${daily.length} delivery day(s)</div></div>`;
+  renderRecommendation(c); renderPerformanceBrief(c,daily,target); renderBar("spendChart",daily,"spendNum","฿",deliveryStatus,"spend"); renderBar("resultChart",daily,"resultNum","",deliveryStatus,"Result"); rerenderDeepRankings(); renderDailyDeliveryTable(daily,c);
+}
+
+function aggregateBy(rows,key,metric){
+  const map={};
+  rows.forEach(r=>{
+    const name=(r[key]||"Unmapped").trim()||"Unmapped";
+    if(!map[name]) map[name]={name,spend:0,result:0,metric:r.metric||metric||""};
+    map[name].spend += r.spendNum||0;
+    map[name].result += r.resultNum||0;
+  });
+  return Object.values(map).map(x=>({
+    ...x,
+    cpr:deriveCostPerResult(x.spend,x.result,x.metric,0)
+  }));
+}
+function bestPerformer(rows,key,metric){
+  const arr=aggregateBy(rows,key,metric).filter(x=>x.result>0);
+  if(!arr.length) return null;
+  arr.sort((a,b)=>{
+    const scoreB = b.result / Math.max(1,b.cpr||999999);
+    const scoreA = a.result / Math.max(1,a.cpr||999999);
+    return scoreB-scoreA;
+  });
+  return arr[0];
+}
+function dailyMovement(rows,metric){
+  if(!rows || rows.length<2) return "Daily movement is not available yet because there are not enough delivery days.";
+  const last=rows[rows.length-1];
+  const prev=rows[rows.length-2];
+  const avgSpend=rows.reduce((a,b)=>a+(b.spendNum||0),0)/rows.length;
+  const avgResult=rows.reduce((a,b)=>a+(b.resultNum||0),0)/rows.length;
+  const lastCpr=deriveCostPerResult(last.spendNum,last.resultNum,metric,0);
+  const avgCpr=deriveCostPerResult(avgSpend,avgResult,metric,0);
+
+  const spendMove = Math.abs((last.spendNum||0)-avgSpend)/Math.max(1,avgSpend) <= 0.15 ? "stable" : (last.spendNum>avgSpend ? "higher than average" : "lower than average");
+  let resultMove = "stable";
+  if(last.resultNum < prev.resultNum && prev.resultNum < rows[Math.max(0,rows.length-3)].resultNum) resultMove = "softening";
+  else if(last.resultNum > prev.resultNum) resultMove = "improving";
+  else if(last.resultNum < prev.resultNum) resultMove = "slightly down";
+
+  let cprText = "";
+  if(lastCpr && avgCpr && lastCpr > avgCpr*1.2) cprText = ` Latest CPR increased to ${money(lastCpr,2)} / ${escapeHtml(metric||"Result")}.`;
+  else if(lastCpr && avgCpr && lastCpr < avgCpr*0.85) cprText = ` Latest CPR improved to ${money(lastCpr,2)} / ${escapeHtml(metric||"Result")}.`;
+
+  return `Daily spend is ${spendMove}, while daily result is ${resultMove} over the latest delivery days.${cprText}`;
+}
+function performanceSeverity(c,rows){
+  if(c.status==="Overspend" || (c.budgetPct!==null && c.budgetPct>100 && (c.kpiPct===null || c.kpiPct<100))) return {cls:"action",label:"Needs Action"};
+  if(c.kpiPct!==null && c.kpiPct>=100 && (c.budgetPct===null || c.budgetPct<=100)) return {cls:"ontrack",label:"On Track"};
+  if(c.kpiPct!==null && c.kpiPct<80 && c.budgetPct!==null && c.budgetPct>70) return {cls:"watch",label:"Watch"};
+  if(rows && rows.length>=2){
+    const last=rows[rows.length-1], avgSpend=rows.reduce((a,b)=>a+(b.spendNum||0),0)/rows.length, avgResult=rows.reduce((a,b)=>a+(b.resultNum||0),0)/rows.length;
+    const lastCpr=deriveCostPerResult(last.spendNum,last.resultNum,c.metric,0), avgCpr=deriveCostPerResult(avgSpend,avgResult,c.metric,0);
+    if(lastCpr && avgCpr && lastCpr>avgCpr*1.25) return {cls:"watch",label:"Watch"};
+  }
+  return {cls:"monitoring",label:"Monitoring"};
+}
+function renderPerformanceBrief(c,daily,targetRows){
+  const el=$("performanceBrief");
+  if(!el) return;
+  const sev=performanceSeverity(c,daily);
+  const metric=c.metric||"Result";
+  const situation = `Campaign is ${String(sev.label).toLowerCase()} with ${c.kpiPct===null?"N/A":fmt(c.kpiPct,1)+"%"} KPI achievement and ${c.budgetPct===null?"N/A":fmt(c.budgetPct,1)+"%"} budget usage. Current CPR is ${c.cprNum===null?"N/A":money(c.cprNum,2)+" / "+escapeHtml(metric)}.`;
+  const movement = dailyMovement(daily,metric);
+  const bestTarget=bestPerformer(targetRows||[],"targetName",metric);
+  const bestCreative=bestPerformer(targetRows||[],"creativeName",metric);
+  let topText="No meaningful target or creative split is available yet.";
+  if(bestTarget || bestCreative){
+    const t = bestTarget ? `Best target: ${bestTarget.name} (${fmt(bestTarget.result,0)} result, ${bestTarget.cpr?money(bestTarget.cpr,2):"N/A"} / ${escapeHtml(metric)}).` : "";
+    const cr = bestCreative ? `Best creative: ${bestCreative.name} (${fmt(bestCreative.result,0)} result, ${bestCreative.cpr?money(bestCreative.cpr,2):"N/A"} / ${escapeHtml(metric)}).` : "";
+    topText = `${t} ${cr}`.trim();
+  }
+
+  let action="Keep monitoring delivery and review performance again after the next data refresh.";
+  if(sev.label==="On Track" && (bestTarget || bestCreative)) action="Keep top target and creative active. Monitor latest CPR before making scale or pause decisions.";
+  else if(sev.label==="Watch") action="Monitor CPR and result movement. Review targeting, creative fatigue, or daily delivery mix if CPR continues to rise.";
+  else if(sev.label==="Needs Action") action="Review budget pacing and delivery efficiency immediately before continuing spend.";
+
+  if(c._dailyRule && c._dailyRule.sourceReady && c._dailyRule.postEndSpendRows && c._dailyRule.postEndSpendRows.length){
+    action = "Urgent: post-end spend was detected after the campaign end date. Check platform delivery and billing immediately.";
+  }
+  el.className=`performanceBrief ${c._dailyRule && c._dailyRule.sourceReady && c._dailyRule.postEndSpendRows && c._dailyRule.postEndSpendRows.length ? "action" : sev.cls}`;
+  el.innerHTML=`
+    <div class="performanceBriefHead">
+      <h3>Campaign Performance Brief</h3>
+      <span class="briefSeverity">${escapeHtml(c._dailyRule && c._dailyRule.sourceReady && c._dailyRule.postEndSpendRows && c._dailyRule.postEndSpendRows.length ? "Spend After End Date" : sev.label)}</span>
+    </div>
+    <div class="briefGrid">
+      <div class="briefItem"><b>Situation</b><span>${situation}</span></div>
+      <div class="briefItem"><b>Movement</b><span>${movement}</span></div>
+      <div class="briefItem"><b>Top Performer</b><span>${topText}</span></div>
+      <div class="briefItem"><b>Action Needed</b><span>${action}</span></div>
+    </div>`;
+}
+
+function renderRecommendation(c){
+  let cls="",title="Monitoring",body="Performance is available for review. Use visible metrics only before making decisions.";
+  if(c.status==="Overspend"){cls="critical";title="Overspend Risk";body="Actual Spend is above Planner Budget. Review budget cap and campaign delivery immediately."}
+  else if(c.status==="No Spend"){cls="watch";title="No Spend During Active Window";body="Campaign is within flight dates but spend is still zero. Check setup, approval, billing, or platform delivery."}
+  else if(c.status==="Active"&&c.kpiPct!==null&&c.kpiPct>=100){cls="good";title="On Track";body="KPI Result is at or above target based on current source data."}
+  else if(c.status==="Active"&&c.kpiPct!==null&&c.kpiPct<80){cls="watch";title="KPI Watch";body="KPI Result is below 80%. Review targeting, creative, placement, or pacing."}
+  $("deepRec").className="rec "+cls;$("deepRec").innerHTML=`<b>${title}</b><br>${body}`;
+}
+function renderBar(id,rows,key,prefix,sourceStatus,metricLabel){
+  const el=$(id); if(["Failed","Timeout"].includes(sourceStatus)){el.innerHTML='<div class="empty">Daily Breakdown failed or timed out, so this chart is hidden.</div>';return}
+  if(sourceStatus==="Loading"){el.innerHTML='<div class="syncState">Daily data is syncing. Wait a moment or click Refresh Data.</div>';return}
+  if(!rows.length){
+    const ready=sourceStatusReady(sourceStatus);
+    const msg = ready ? "No daily rows matched the active scope after sync." : "Daily data is syncing. Wait a moment or click Refresh Data.";
+    el.innerHTML=`<div class="${ready?"empty":"syncState"}">${msg}</div>`;
+    return;
+  }
+  const w=760,h=265,pad=38,vals=rows.map(r=>r[key]||0),max=Math.max(...vals,1),barW=Math.max(10,(w-pad*2)/rows.length*.62),gap=(w-pad*2)/rows.length;
+  const barColor=BRAND_CONFIG.dailyChartBarColor||"#00A150";
+  let bars="",labels="";
+  rows.forEach((r,i)=>{
+    const val=r[key]||0,x=pad+i*gap+(gap-barW)/2,bh=val/max*(h-pad*2),y=h-pad-bh,showLabel=rows.length<=14||val===max;
+    bars+=`<rect x="${x}" y="${y}" width="${barW}" height="${bh}" rx="4" fill="${barColor}"><title>${fmtDate(r.dateObj)}: ${prefix}${fmt(val,0)} ${metricLabel||""}</title></rect>`;
+    if(showLabel)bars+=`<text x="${x+barW/2}" y="${Math.max(18,y-5)}" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">${prefix}${fmt(val,0)}</text>`;
+    if(i%Math.ceil(rows.length/8)===0)labels+=`<text x="${x+barW/2}" y="${h-10}" text-anchor="middle" font-size="10" fill="#64748b">${String(r.dateObj?String(r.dateObj.getDate()).padStart(2,"0"):"")}</text>`;
+  });
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%"><line x1="${pad}" y1="${h-pad}" x2="${w-pad}" y2="${h-pad}" stroke="#cbd5e1"/><line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h-pad}" stroke="#cbd5e1"/><text x="${pad}" y="18" font-size="11" fill="#64748b">Max ${prefix}${fmt(max,0)} ${escapeHtml(metricLabel||"")}</text>${bars}${labels}</svg>`;
+}
+function rerenderDeepRankings(){if(!state.selected)return;renderRank("targetRank",state.selected._target||[],"targetName",$("targetViewMode").value,state.status.target);renderRank("creativeRank",state.selected._target||[],"creativeName",$("creativeViewMode").value,state.status.target)}
+function renderRank(id,rows,key,mode,sourceStatus){
+  const el=$(id); if(["Failed","Timeout","Optional Missing"].includes(sourceStatus)){el.innerHTML='<div class="empty">Target & Creative source is optional and unavailable. This section is hidden.</div>';return}
+  if(sourceStatus==="Loading"){el.innerHTML='<div class="empty">Target & Creative source is still loading.</div>';return}
+  if(!rows.length){el.innerHTML='<div class="empty">No Target/Creative rows found for this Campaign Code.</div>';return}
+  if(mode==="daily"){renderDailyRankTable(el,rows,key);return}
+  const map={}; rows.forEach(r=>{const name=r[key]||"Unmapped";if(!map[name])map[name]={name,spend:0,result:0,cpr:0,metric:r.metric,row:r};map[name].spend+=r.spendNum;map[name].result+=r.resultNum});const arr=Object.values(map).map(x=>({...x,cpr:deriveCostPerResult(x.spend,x.result,x.metric,0)})).sort((a,b)=>b.spend-a.spend).slice(0,8);const max=Math.max(...arr.map(x=>x.spend),1);
+  el.innerHTML=arr.map(x=>{const nextScope=buildScopeFromRow(x.row,key==="targetName"?"adset":"creative");const scopeKey=getScopeKey(nextScope);return `<div class="rankRow campaignClickable" tabindex="0" role="button" onclick="openDeepByScopeKey('${escapeAttr(scopeKey)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDeepByScopeKey('${escapeAttr(scopeKey)}')}"><div class="rankLabels"><span class="rankName" title="${escapeAttr(x.name)}">${escapeHtml(x.name)}</span><span>${money(x.spend,0)} · ${fmt(x.result,0)} · CPR ${x.cpr?money(x.cpr,2):"N/A"}</span></div><div class="rankTrack"><div class="rankFill" style="width:${Math.max(2,x.spend/max*100)}%"></div></div></div>`}).join("");
+}
+function renderDailyRankTable(el,rows,key){
+  const sorted=[...rows].sort((a,b)=>(a.dateObj?.getTime()||0)-(b.dateObj?.getTime()||0)||b.spendNum-a.spendNum).slice(0,40);
+  el.innerHTML=`<table class="dailyTable"><thead><tr><th>Date</th><th>${key==="targetName"?"Target / Ad Set":"Creative / Ads"}</th><th>Spend</th><th>Result</th><th>CPR</th></tr></thead><tbody>${sorted.map(r=>{const scopeKey=getScopeKey(buildScopeFromRow(r,key==="targetName"?"adset":"creative"));return `<tr class="campaignClickable" tabindex="0" role="button" onclick="openDeepByScopeKey('${escapeAttr(scopeKey)}')"><td>${fmtDate(r.dateObj)}</td><td class="nameCell" title="${escapeAttr(r[key])}">${escapeHtml(r[key]||"Unmapped")}</td><td>${money(r.spendNum,0)}</td><td>${fmt(r.resultNum,0)}</td><td>${r.cprNum?money(r.cprNum,2):"N/A"}</td></tr>`}).join("")}</tbody></table>`;
+}
+function renderDailyDeliveryTable(rows,c){
+  const el=$("dailyDeliveryTable");
+  if(!sourceStatusReady(c._deliveryStatus)){
+    el.innerHTML=`<div class="syncState">Daily data is syncing. This table will update automatically after ${escapeHtml(c._deliverySource||"the delivery source")} is loaded.</div>`;
+    return;
+  }
+  if(!rows.length){
+    const hidden = c._dailyRule && c._dailyRule.hiddenZeroRows ? c._dailyRule.hiddenZeroRows.length : 0;
+    const note = hidden ? `${hidden} post-end zero-spend day(s) hidden because campaign already ended.` : "No daily rows matched the active scope.";
+    el.innerHTML=`<div class="empty">${note}</div>`;
+    return;
+  }
+  const cleanupNote = c._dailyRule && c._dailyRule.hiddenZeroRows && c._dailyRule.hiddenZeroRows.length
+    ? `<div class="smallNote" style="margin-bottom:8px">${c._dailyRule.hiddenZeroRows.length} post-end zero-spend day(s) hidden because campaign already ended.</div>`
+    : "";
+  el.innerHTML=cleanupNote+`<table class="dailyTable"><thead><tr><th>Date</th><th>Spend</th><th>Result</th><th>CPR / Metric</th></tr></thead><tbody>${rows.map(r=>`<tr class="${r._postEndSpend?'postEndSpendRow':''}"><td>${fmtDate(r.dateObj)}</td><td>${money(r.spendNum,0)}</td><td>${fmt(r.resultNum,0)}</td><td>${r.cprNum?money(r.cprNum,2):"N/A"} / ${escapeHtml(c.metric||"Result")}</td></tr>`).join("")}</tbody></table>`;
+}
+
+function initLearningFilters(){
+  if(!$("learningMonth")) return;
+  const rows=state.data.learning||[];
+  setLearningOptions("learningMonth",["ALL",...[...new Set(rows.map(r=>r.learningMonth).filter(Boolean))].sort().reverse()]);
+  setLearningOptions("learningPlatform",["ALL",...[...new Set(rows.map(r=>r.learningPlatform).filter(Boolean))].sort()]);
+  setLearningOptions("learningMetric",["ALL",...[...new Set(rows.map(r=>r.learningMetric).filter(Boolean))].sort()]);
+}
+function setLearningOptions(id,items){
+  const el=$(id); if(!el) return;
+  const prev=el.value||"ALL";
+  el.innerHTML=items.map(v=>`<option value="${escapeAttr(v)}" ${v===prev?"selected":""}>${escapeHtml(v)}</option>`).join("");
+}
+function filteredLearningRows(){
+  if(!$("learningMonth")) return [];
+  const m=$("learningMonth").value||"ALL", p=$("learningPlatform").value||"ALL", km=$("learningMetric").value||"ALL", q=($("learningSearch").value||"").toLowerCase().trim();
+  return (state.data.learning||[]).filter(r=>{
+    if(m!=="ALL" && r.learningMonth!==m) return false;
+    if(p!=="ALL" && r.learningPlatform!==p) return false;
+    if(km!=="ALL" && r.learningMetric!==km) return false;
+    if(q){
+      const text=`${r.learningMonth} ${r.learningPlatform} ${r.learningMetric} ${r.topic} ${r.issue} ${r.action} ${r.learning} ${r.watchout} ${r.insight} ${r.md}`.toLowerCase();
+      if(!text.includes(q)) return false;
+    }
+    return true;
+  });
+}
+function renderLearning(){
+  if(!$("learningRows")) return;
+  const rows=filteredLearningRows();
+  renderLearningSummary(rows);
+  renderLearningCards(rows);
+  renderTalkingPoints(rows);
+  renderLearningThemes(rows);
+  if(!rows.length){
+    $("learningRows").innerHTML=`<tr><td colspan="8"><div class="empty">No Learning_Log rows match the current filters.</div></td></tr>`;
+    return;
+  }
+  $("learningRows").innerHTML=rows.map(r=>`
+    <tr>
+      <td>${escapeHtml(r.learningMonth||"-")}</td>
+      <td><span class="badge platform p-${String(r.learningPlatform||"other").toLowerCase().replace(/[^a-z0-9]/g,"")}">${escapeHtml(r.learningPlatform||"-")}</span></td>
+      <td class="nameCell" title="${escapeAttr(r.topic)}">${escapeHtml(r.topic||"-")}</td>
+      <td>${escapeHtml(r.learningMetric||"-")}</td>
+      <td class="nameCell" title="${escapeAttr(r.issue)}">${escapeHtml(r.issue||"-")}</td>
+      <td class="nameCell" title="${escapeAttr(r.learning)}">${escapeHtml(r.learning||"-")}</td>
+      <td class="nameCell" title="${escapeAttr(r.watchout)}">${escapeHtml(r.watchout||"-")}</td>
+      <td class="nameCell" title="${escapeAttr(r.action)}">${escapeHtml(r.action||"-")}</td>
+    </tr>`).join("");
+}
+function renderLearningSummary(rows){
+  const platformCount=[...new Set(rows.map(r=>r.learningPlatform).filter(Boolean))].length;
+  const riskCount=rows.filter(r=>`${r.issue} ${r.watchout} ${r.statusText}`.toLowerCase().match(/risk|watch|cpm|drop|high|issue|alert/)).length;
+  const reusableCount=rows.filter(r=>`${r.insight} ${r.md} ${r.learning}`.trim()).length;
+  const summary=rows.length
+    ? `Learning_Log has ${rows.length} visible learning item(s) across ${platformCount} platform(s). ${riskCount} item(s) look like risk/watchout patterns. ${reusableCount} item(s) are usable as presentation talking points.`
+    : `No learning item is visible under the current filters.`;
+  const byPlatform={}; rows.forEach(r=>{const p=r.learningPlatform||"Other";byPlatform[p]=(byPlatform[p]||0)+1;});
+  const max=Math.max(...Object.values(byPlatform),1);
+  const bars=Object.entries(byPlatform).sort((a,b)=>b[1]-a[1]).map(([p,v])=>`
+    <div class="platformSpendRow"><span>${escapeHtml(p)}</span><div class="platformSpendTrack"><div class="platformSpendFill" style="width:${Math.max(5,v/max*100)}%"></div></div><span>${v} item(s)</span></div>`).join("") || `<div class="smallNote">No learning item available.</div>`;
+  $("learningSummary").innerHTML=`
+    <div>
+      <h3>Executive Learning Summary</h3>
+      <div class="bigPictureText">${escapeHtml(summary)}</div>
+      <div class="smallNote" style="margin-top:6px">This page is for presentation learning: past issues, reusable insight, and how to explain performance professionally.</div>
+    </div>
+    <div class="platformSpend">
+      <h3>Learning by Platform</h3>
+      ${bars}
+    </div>`;
+}
+function renderLearningCards(rows){
+  const risks=rows.filter(r=>`${r.issue} ${r.watchout}`.trim()).length;
+  const actions=rows.filter(r=>`${r.action}`.trim()).length;
+  const reusable=rows.filter(r=>`${r.insight} ${r.md} ${r.learning}`.trim()).length;
+  const active=rows.filter(r=>String(r.statusText||"").toLowerCase().includes("active")||String(r.activeFlag||"").match(/true|yes|1/i)).length;
+  $("learningCards").innerHTML=`
+    <div class="kpi amber"><div class="label">Known Patterns</div><div class="value">${rows.length}</div><div class="sub">Visible historical learning rows</div></div>
+    <div class="kpi red"><div class="label">Risk / Watchout</div><div class="value">${risks}</div><div class="sub">Issue or watchout fields present</div></div>
+    <div class="kpi green"><div class="label">Reusable Insight</div><div class="value">${reusable}</div><div class="sub">Usable in presentation</div></div>
+    <div class="kpi blue"><div class="label">Suggested Action</div><div class="value">${actions}</div><div class="sub">Action taken or recommended action</div></div>
+    <div class="kpi purple"><div class="label">Active Learning</div><div class="value">${active}</div><div class="sub">Still relevant learning items</div></div>`;
+}
+function renderTalkingPoints(rows){
+  const points=rows.map(r=>{
+    const head=[r.learningMonth,r.learningPlatform,r.topic].filter(Boolean).join(" | ");
+    const body=r.md || r.insight || r.learning || r.issue || r.action;
+    return body ? `${head ? head+" — " : ""}${body}` : "";
+  }).filter(Boolean);
+  const unique=[...new Set(points)];
+  $("talkingPoints").innerHTML=unique.length
+    ? unique.map(p=>`<div class="talkPoint">${escapeHtml(p)}</div>`).join("")
+    : `<div class="empty">No talking point available from the selected Learning_Log rows.</div>`;
+}
+function classifyTheme(r){
+  const text=`${r.topic} ${r.issue} ${r.learning} ${r.watchout} ${r.insight} ${r.action}`.toLowerCase();
+  if(text.match(/location|branch|radius|local|สาขา/)) return "Location / Branch Targeting";
+  if(text.match(/promo|promotion|โปร/)) return "Promo Creative";
+  if(text.match(/creative|format|template|content|ad format/)) return "Creative Format / Diversity";
+  if(text.match(/tiktok|kol|food|creator/)) return "TikTok / Creator Content";
+  if(text.match(/cpm|cost|price|แพง/)) return "CPM / Cost Pressure";
+  if(text.match(/ctr|er|engagement|recall/)) return "CTR / Engagement";
+  if(text.match(/audience|target|interest/)) return "Audience / Targeting";
+  return "General Learning";
+}
+function renderLearningThemes(rows){
+  const map={};
+  rows.forEach(r=>{
+    const t=classifyTheme(r);
+    if(!map[t]) map[t]={count:0,examples:[]};
+    map[t].count++;
+    const ex=r.insight || r.learning || r.issue || r.action;
+    if(ex && map[t].examples.length<2) map[t].examples.push(ex);
+  });
+  const max=Math.max(...Object.values(map).map(x=>x.count),1);
+  $("learningThemes").innerHTML=Object.entries(map).sort((a,b)=>b[1].count-a[1].count).map(([theme,v])=>`
+    <div class="themeRow">
+      <b>${escapeHtml(theme)} · ${v.count}</b>
+      <div class="smallNote">${escapeHtml(v.examples[0]||"No example available.")}</div>
+      <div class="bar"><div class="fill" style="width:${Math.max(5,v.count/max*100)}%"></div></div>
+    </div>`).join("") || `<div class="empty">No learning theme available.</div>`;
+}
+
+
+/* ============================================================
+   FREEZE MODE CONTROLLER
+   Keeps #tableShell class in sync with dropdown selection.
+   ============================================================ */
+function applyFreezeMode(){
+  const shell = document.getElementById("tableShell");
+  const select = document.getElementById("freezeMode");
+  if(!shell) return;
+  const mode = select && select.value ? select.value : "3";
+  shell.classList.remove("freeze1","freeze2","freeze3","freeze4","freeze5","freeze6");
+  shell.classList.add("freeze" + mode);
+}
+
+function exportVisibleCsv(){const headers=["Status","Campaign Code","Platform","Objective","Campaign Name","Focus Ad Set","Weight Score","% Budget","% KPI Result","Start Date","End Date","Planner Budget","Actual Spend","Actual Result","CPR / Metric","TD Preview Link","Remark"];const rows=state.filtered.map(o=>[o.status,o.code,o.platform,o.objective,o.name,getFocusAdSetsForCampaign(o),o.weight,o.budgetPct,o.kpiPct,fmtDate(o.startDate),fmtDate(o.endDate),o.budgetNum,o.spendNum,`${fmt(o.resultNum,0)}${o.resultLabel?" "+o.resultLabel:""}`,(o.cprNum?money(o.cprNum,2):"N/A")+" / "+(o.metric||"Result"),o.td,o.remark]);const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="idac_control_tower_visible_rows.csv";a.click();URL.revokeObjectURL(a.href)}
+function showPage(page){state.ui.currentPage=page;saveUiState();document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$("page-"+page).classList.add("active");document.querySelectorAll(".nav li").forEach(n=>n.classList.toggle("active",n.dataset.page===page));$("pageTitle").textContent=page==="control"?"Control Tower":page==="deep"?"Deep Analytics":"Learning Intelligence"}
+window.addEventListener("DOMContentLoaded",()=>{applyBrandConfig();applyFreezeMode();refreshData();});
+</script>
+</body>
+</html>
